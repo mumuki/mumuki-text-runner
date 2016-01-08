@@ -21,8 +21,18 @@ describe TestCompiler do
       let(:source) { '321' }
       let(:expected) { '123' }
 
-      it { expect(result).to eq '321 is not the right value.' }
-      it { expect(status).to eq :failed }
+      context 'and the default message is used' do
+        it { expect(result).to eq '321 is not the right value.' }
+        it { expect(status).to eq :failed }
+      end
+
+      context 'and a message is given' do
+        let(:output) { runner.run_compilation!(source: source, expected: expected, error_message: 'Oops, try again') }
+
+        it { expect(result).to eq 'Oops, try again' }
+      end
     end
+
+
   end
 end
