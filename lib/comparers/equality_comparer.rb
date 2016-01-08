@@ -12,11 +12,17 @@ class EqualityComparer
     @error_message || default_error_message(actual)
   end
 
-  def default_error_message(actual)
-    I18n.t 'equality.failure', { actual: actual }
-  end
-
   def success_message(actual)
     ''
+  end
+
+  private
+
+  def default_error_message(actual)
+    I18n.t "#{i18n_prefix}.failure", { actual: actual }
+  end
+
+  def i18n_prefix
+    self.class.name.sub('Comparer', '').underscore
   end
 end
