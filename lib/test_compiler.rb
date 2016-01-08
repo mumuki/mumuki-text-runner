@@ -1,7 +1,8 @@
 require 'mumukit'
+require 'yaml'
 
 class TestCompiler < Mumukit::Hook
   def create_compilation!(request)
-    request[:content].strip
+    { source: request[:content].strip }
   end
 end
