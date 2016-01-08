@@ -24,13 +24,13 @@ describe TestCompiler do
       let(:expected) { '123' }
 
       context 'and the default message is used' do
-        it { expect(result).to eq '321 is not the right value.' }
+        it { expect(result).to eq '**321** is not the right value.' }
         it { expect(status).to eq :failed }
       end
 
       context 'and es locale is selected' do
         before { I18n.locale = :es }
-        it { expect(result).to eq '321 no es el valor correcto.' }
+        it { expect(result).to eq '**321** no es el valor correcto.' }
       end
 
       context 'and a message is given' do
