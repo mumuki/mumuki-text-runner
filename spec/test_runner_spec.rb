@@ -7,7 +7,8 @@ describe TestCompiler do
   let(:runner) { TestRunner.new }
 
   describe '#run_compilation!' do
-    let(:output) { runner.run_compilation!(source: source, equal: expected) }
+    let(:extra) { {} }
+    let(:output) { runner.run_compilation!({source: source, equal: expected}.merge(extra)) }
     let(:result) { output[0]}
     let(:status) { output[1] }
 
@@ -37,6 +38,14 @@ describe TestCompiler do
         let(:output) { runner.run_compilation!(source: source, expected: expected, error_message: 'Oops, try again') }
         it { expect(result).to eq 'Oops, try again' }
       end
+    end
+
+    context 'ignore whitespace transformation' do
+      let(:source) { '2^1 + 2^0' }
+      let(:expected) { '2^1+2^0' }
+      let(:extra) { { ignore_whitespace: true } }
+
+      it { expect(status).to eq :passed }
     end
   end
 end

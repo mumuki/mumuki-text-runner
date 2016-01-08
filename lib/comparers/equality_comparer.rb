@@ -1,11 +1,12 @@
 class EqualityComparer
-  def initialize(test_definition)
-    @expected = test_definition[:equal]
+  def initialize(test_definition, options)
+    @options = options
     @error_message = test_definition[:error_message]
+    @expected = test_definition[:equal]
   end
 
   def successful_for?(actual)
-    actual == @expected
+    transform(actual) == transform(@expected)
   end
 
   def error_message(actual)
@@ -14,6 +15,10 @@ class EqualityComparer
 
   def success_message(actual)
     ''
+  end
+
+  def transform(text)
+    @options.reduce(text) { |acum, elem| elem.apply acum }
   end
 
   private
