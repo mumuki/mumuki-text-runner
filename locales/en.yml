@@ -1,0 +1,3 @@
+en:
+  equality:
+    failure: '%{actual} is not the right value.'

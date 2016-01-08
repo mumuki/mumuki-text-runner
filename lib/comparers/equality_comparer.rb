@@ -13,7 +13,7 @@ class EqualityComparer
   end
 
   def default_error_message(actual)
-    "#{actual} is not the right value."
+    I18n.t 'equality.failure', { actual: actual }
   end
 
   def success_message(actual)

@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'yaml'
 
 describe TestCompiler do
+  before { I18n.locale = :en }
+
   let(:runner) { TestRunner.new }
 
   describe '#run_compilation!' do
@@ -26,13 +28,15 @@ describe TestCompiler do
         it { expect(status).to eq :failed }
       end
 
+      context 'and es locale is selected' do
+        before { I18n.locale = :es }
+        it { expect(result).to eq '321 no es el valor correcto.' }
+      end
+
       context 'and a message is given' do
         let(:output) { runner.run_compilation!(source: source, expected: expected, error_message: 'Oops, try again') }
-
         it { expect(result).to eq 'Oops, try again' }
       end
     end
-
-
   end
 end
