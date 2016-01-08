@@ -1,0 +1,3 @@
+es:
+  equality:
+    failure: '**%{actual}** no es el valor correcto.'
