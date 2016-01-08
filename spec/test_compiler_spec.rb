@@ -13,8 +13,8 @@ describe TestCompiler do
     end
 
     context 'deserializes YAML test' do
-      let(:test) { "equals: '100'" }
-      it { expect(output[:equals]).to eq '100' }
+      let(:test) { "equal: '100'" }
+      it { expect(output[:equal]).to eq '100' }
     end
   end
 end
