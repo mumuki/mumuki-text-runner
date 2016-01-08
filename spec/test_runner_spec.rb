@@ -7,7 +7,7 @@ describe TestCompiler do
   let(:runner) { TestRunner.new }
 
   describe '#run_compilation!' do
-    let(:output) { runner.run_compilation!(source: source, expected: expected) }
+    let(:output) { runner.run_compilation!(source: source, equals: expected) }
     let(:result) { output[0]}
     let(:status) { output[1] }
 

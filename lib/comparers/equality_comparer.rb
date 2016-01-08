@@ -1,6 +1,6 @@
 class EqualityComparer
   def initialize(test_definition)
-    @expected = test_definition[:expected]
+    @expected = test_definition[:equals]
     @error_message = test_definition[:error_message]
   end
 

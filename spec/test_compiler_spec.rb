@@ -4,7 +4,7 @@ describe TestCompiler do
   let(:compiler) { TestCompiler.new }
   let(:output) { compiler.create_compilation!({content: content, test: test}) }
   let(:content) { 'content' }
-  let(:test) { 'expected: test' }
+  let(:test) { 'equals: test' }
 
   describe '#create_compilation!' do
     context 'removes trailing whitespaces from source' do
@@ -13,8 +13,8 @@ describe TestCompiler do
     end
 
     context 'deserializes YAML test' do
-      let(:test) { "expected: '100'" }
-      it { expect(output[:expected]).to eq '100' }
+      let(:test) { "equals: '100'" }
+      it { expect(output[:equals]).to eq '100' }
     end
   end
 end
