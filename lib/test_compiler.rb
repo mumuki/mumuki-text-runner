@@ -1,6 +1,3 @@
-require 'mumukit'
-require 'yaml'
-
 class TestCompiler < Mumukit::Hook
   def create_compilation!(request)
     parse_test(request).merge(source: request[:content].strip)

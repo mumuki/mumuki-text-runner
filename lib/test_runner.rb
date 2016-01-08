@@ -1,9 +1,3 @@
-require 'mumukit'
-require 'yaml'
-
-require_relative 'comparers/equality_comparer'
-require_relative 'options/ignore_whitespace'
-
 class TestRunner < Mumukit::Hook
   def run_compilation!(test_definition)
     comparer = comparer_for(test_definition)
