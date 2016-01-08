@@ -1,8 +1,3 @@
-require 'mumukit'
-require 'yaml'
-
-require_relative 'comparers/equality_comparer.rb'
-
 class TestRunner < Mumukit::Hook
   def run_compilation!(test_definition)
     comparer = comparer_for(test_definition)
@@ -18,7 +13,11 @@ class TestRunner < Mumukit::Hook
   private
 
   def comparer_for(test_definition)
-    EqualityComparer.new(test_definition)
+    EqualityComparer.new(test_definition, options_for(test_definition))
+  end
+
+  def options_for(test_definition)
+    test_definition[:ignore_whitespace] ? [IgnoreWhitespace.new] : []
   end
 end
 
