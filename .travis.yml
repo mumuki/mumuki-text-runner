@@ -2,13 +2,14 @@ language: ruby
 env: RACK_ENV=development
 rvm:
 - 2.0.0
-deploy:
-  provider: heroku
-  api_key:
-    secure: FY6hr2AIolfPnJ2xsfAptcdOJgkoLAj+HFIawzcgCMR67/Y4MNF9JgMKOO3kJvLtHvGrN44f/giqitEPq+CSmu9WmGAuXMapzXaot/tE80evtUXZnBbPw491arnkifcq1kNrxGIK/kSR58tDXOEJNDD8MkKa9vIt+khrE3pO7Ob0Xoi8G860yyo7xnK13/6OuNeTMaqzBJczVgnX9YoxMOFlk42HXJwYuldSeg4fvA0JkCYnvZZR3pRyGlXFRRERvUNVg63k7YHbLhffnammYKCs+Be2Ngabdu1Q1dH0TwQMLg5pAk0HrRFzVpBS7mjIq163l5mPpzNX5iJ9VpYnN9KEBvSqktxJsHSUjVUhTprJj0MDo18t2zPzJzhyaQf31dbzoYagOixDIl1+0+0AqOf3VFYBO+ZMqAEM9XM9BJgfoLiny1yFUt0qWUHwwPVw3za56XEH8+lfbRzC2MTBnuXH49RAlUn8GSWe8rNuJYGM5AwtIyCa2R5OygvHZUkE5rBRBXI7F7kAWZmxXAaD4MFT1LR4i4J61Suo0ULkOV5Pnj9v6c016p6cMSGiCxahvVzoRdOLgsQE1FbGIuTyvSskSrcBuResc0oUGMjcRDEbqDOjvPh7Xt6ctwqRG2eDjymL+HcSFWlwGTantix+KZqHa0nUI9oyYj8WcjQ5YWQ=
-  app: mumuki-text-server
-  on:
-    repo: mumuki/mumuki-text-server
+git:
+  depth: 100
+after_success:
+- wget https://raw.githubusercontent.com/mumuki/mumuki-escualo/master/travis_deploy
+  && chmod u+x travis_deploy && ./travis_deploy text runners2.mumuki.io
 addons:
   code_climate:
     repo_token: 0bca70dfb8aeeacd4e022ed2766f157553786af7a38c27e73291bb925eae7155
+before_install:
+- openssl aes-256-cbc -K $encrypted_21db0007116f_key -iv $encrypted_21db0007116f_iv
+  -in escualo_rsa.enc -out escualo_rsa -d
