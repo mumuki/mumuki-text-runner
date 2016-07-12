@@ -35,7 +35,7 @@ describe TextTestHook do
       end
 
       context 'and a message is given' do
-        let(:output) { runner.run_compilation!(source: source, expected: expected, error_message: 'Oops, try again') }
+        let(:output) { runner.run!(source: source, expected: expected, error_message: 'Oops, try again') }
         it { expect(result).to eq 'Oops, try again' }
       end
     end
