@@ -1,14 +1,14 @@
 require 'spec_helper'
 require 'yaml'
 
-describe TestCompiler do
+describe TextTestHook do
   before { I18n.locale = :en }
 
-  let(:runner) { TestRunner.new }
+  let(:runner) { TextTestHook.new }
 
   describe '#run_compilation!' do
     let(:extra) { {} }
-    let(:output) { runner.run_compilation!({source: source, equal: expected}.merge(extra)) }
+    let(:output) { runner.run!({source: source, equal: expected}.merge(extra)) }
     let(:result) { output[0]}
     let(:status) { output[1] }
 
@@ -35,7 +35,7 @@ describe TestCompiler do
       end
 
       context 'and a message is given' do
-        let(:output) { runner.run_compilation!(source: source, expected: expected, error_message: 'Oops, try again') }
+        let(:output) { runner.run!(source: source, expected: expected, error_message: 'Oops, try again') }
         it { expect(result).to eq 'Oops, try again' }
       end
     end

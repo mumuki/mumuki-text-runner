@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe TestCompiler do
-  let(:compiler) { TestCompiler.new }
-  let(:output) { compiler.create_compilation!({content: content, test: test}) }
+describe TextTestHook do
+  let(:compiler) { TextTestHook.new }
+  let(:output) { compiler.compile({content: content, test: test}) }
   let(:content) { 'content' }
   let(:test) { 'equals: test' }
 

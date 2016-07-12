@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'yaml'
 
-describe TestCompiler do
+describe TextTestHook do
   before { I18n.locale = :en }
 
-  let(:runner) { TestRunner.new }
+  let(:runner) { TextTestHook.new }
 
   describe 'with ignore whitespace option' do
     let(:comparer) { EqualityComparer.new({equal: '1 + 2'}, [IgnoreWhitespace.new]) }
