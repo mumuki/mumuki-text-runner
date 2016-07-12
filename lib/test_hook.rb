@@ -1,5 +1,9 @@
-class TestRunner < Mumukit::Hook
-  def run_compilation!(test_definition)
+class TextTestHook < Mumukit::Hook
+  def compile(request)
+    parse_test(request).merge(source: request[:content].strip)
+  end
+
+  def run!(test_definition)
     comparer = comparer_for(test_definition)
     actual = test_definition[:source]
 
@@ -8,6 +12,12 @@ class TestRunner < Mumukit::Hook
     else
       [comparer.error_message(actual), :failed]
     end
+  end
+
+  private
+
+  def parse_test(request)
+    YAML.load(request[:test]).deep_symbolize_keys
   end
 
   private

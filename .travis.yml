@@ -2,18 +2,8 @@ language: ruby
 env:
   matrix:
   - RACK_ENV=development
-  global:
-    secure: TcgIXv5xjJsaVXNZfVm8Kf4lWhhmGq7XvBAkEUN1NCNW9CAOf4LeJTnoefSGBJb12eHaqBVvmT3PKf/Xx6gK7SnXeoc8tMsdMR2XznwuUE1AD91+LLdNhOTik97F58Exg+eDQcKENCCr5FpQx7e6TRQOSd/EVps4aK5gtjwTZbxuqQ8gQOmuswEI1hktaQZ+W+GiHzmE1+EgULbytEy4VuTIqBW2cVPw32WjL1BW7kdS/FDDTMr/cxTcqjcWgzsxPvipcHA1c/+ZcRcpQBOXPnF0zgy9MHSOFUY2YZlOKQkMCwobS9dEtgtt2Ye0GMm8kWD7M0yIBmXtys+9Snz2G7BZLxAzUDIuv2S8TkGVOnEA67mzeOMZ7WzUJ2+EO6BABwW2/3lZcyZ6jFT1ScmPO1NfmE5rE16/iC0ZpH0fZy5CAySBpnnSL8GlNppAT969Dhn8AHrGHVGMfLVJ5Sk3IPLuXd4BrMvbeupFWHeqw3IaLtlkuSATEOWZySlYXNG9u6eZPEgPGy01m3o5ZSPVqk/TjMuwlkzxCzZTWFF8re5QkCUV3eOfpG3HsBadbNdzCVgkH+qemLgQUImbLwrWrrNDpa2KsfGfV5Tnq86wh6R2A5dUVuOMufEqL3xZQvGeP72HNVXwWA0fZxKlIx+xZsv4tAhiHZX0rf0etR4EacQ=
 rvm:
 - 2.0.0
-git:
-  depth: 100
 addons:
   code_climate:
     repo_token: 0bca70dfb8aeeacd4e022ed2766f157553786af7a38c27e73291bb925eae7155
-before_install:
-- openssl aes-256-cbc -K $encrypted_21db0007116f_key -iv $encrypted_21db0007116f_iv
-  -in escualo_rsa.enc -out escualo_rsa -d
-after_success:
-- wget https://raw.githubusercontent.com/mumuki/mumuki-escualo-deploy/master/travis_deploy && chmod u+x travis_deploy
-- ./travis_deploy text
