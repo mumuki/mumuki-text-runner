@@ -47,5 +47,13 @@ describe TextTestHook do
 
       it { expect(status).to eq :passed }
     end
+
+    context 'ignore case transformation' do
+      let(:source) { 'ola K ASe' }
+      let(:expected) { 'Ola k ase' }
+      let(:extra) { { ignore_case: true } }
+
+      it { expect(status).to eq :passed }
+    end
   end
 end

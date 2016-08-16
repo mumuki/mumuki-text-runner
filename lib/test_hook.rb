@@ -27,7 +27,10 @@ class TextTestHook < Mumukit::Hook
   end
 
   def options_for(test_definition)
-    test_definition[:ignore_whitespace] ? [IgnoreWhitespace.new] : []
+    options = []
+    options << IgnoreWhitespace if test_definition[:ignore_whitespace]
+    options << IgnoreCase if test_definition[:ignore_case]
+    options
   end
 end
 

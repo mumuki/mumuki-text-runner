@@ -7,8 +7,14 @@ describe TextTestHook do
   let(:runner) { TextTestHook.new }
 
   describe 'with ignore whitespace option' do
-    let(:comparer) { EqualityComparer.new({equal: '1 + 2'}, [IgnoreWhitespace.new]) }
+    let(:comparer) { EqualityComparer.new({equal: '1 + 2'}, [IgnoreWhitespace]) }
 
     it { expect(comparer.successful_for? '1+2').to eq true }
+  end
+
+  describe 'with many options' do
+    let(:comparer) { EqualityComparer.new({equal: 'whatsup?'}, [IgnoreWhitespace, IgnoreCase]) }
+
+    it { expect(comparer.successful_for? '  whAts UP?').to eq true }
   end
 end

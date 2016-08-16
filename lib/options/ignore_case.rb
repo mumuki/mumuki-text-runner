@@ -1,7 +1,7 @@
-module IgnoreWhitespace
+module IgnoreCase
   class << self
     def apply(text)
-      text.gsub(' ', '')
+      text.downcase
     end
   end
 end
