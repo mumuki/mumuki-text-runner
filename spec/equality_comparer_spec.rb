@@ -4,8 +4,6 @@ require 'yaml'
 describe TextTestHook do
   before { I18n.locale = :en }
 
-  let(:runner) { TextTestHook.new }
-
   describe 'with ignore whitespace option' do
     let(:comparer) { EqualityComparer.new({equal: '1 + 2'}, [IgnoreWhitespace]) }
 
