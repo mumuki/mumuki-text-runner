@@ -20,8 +20,6 @@ class TextTestHook < Mumukit::Hook
     YAML.load(request[:test]).deep_symbolize_keys
   end
 
-  private
-
   def comparer_for(test_definition)
     EqualityComparer.new(test_definition, options_for(test_definition))
   end
