@@ -1,5 +1,7 @@
-require 'active_support/all'
 require 'mumukit/bridge'
+require 'active_support/all'
+
+require_relative './spec_helper'
 
 describe 'integration test' do
   let(:bridge) { Mumukit::Bridge::Runner.new('http://localhost:4567') }
@@ -19,8 +21,8 @@ describe 'integration test' do
   it 'answers a valid hash when submission fails' do
     response = bridge.run_tests!(test: 'equal: test', extra: '', content: 'demo', expectations: [])
 
-    expect(response[:result]).to include('is not the right value')
-    expect(response[:status]).to eq(:failed)
+    expect(response[:result]).to include 'is not the right value'
+    expect(response[:status]).to eq :failed
   end
 
 end

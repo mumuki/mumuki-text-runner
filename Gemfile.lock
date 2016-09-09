@@ -74,7 +74,7 @@ GEM
     domain_name (0.5.20160615)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
-    excon (0.52.0)
+    excon (0.45.4)
     ffi (1.9.14-x64-mingw32)
     http-cookie (1.0.2)
       domain_name (~> 0.5)

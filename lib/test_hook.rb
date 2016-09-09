@@ -7,6 +7,7 @@ class TextTestHook < Mumukit::Hook
     comparer = comparer_for(test_definition)
     actual = test_definition[:source]
 
+
     if comparer.successful_for? actual
       [comparer.success_message(actual), :passed]
     else

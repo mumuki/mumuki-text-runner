@@ -1,5 +1,4 @@
-require 'spec_helper'
-require 'yaml'
+require_relative './spec_helper'
 
 describe TextTestHook do
   before { I18n.locale = :en }
