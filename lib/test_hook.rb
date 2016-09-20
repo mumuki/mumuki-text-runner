@@ -1,35 +1,23 @@
+require 'mumukit/hook'
+
 class TextTestHook < Mumukit::Hook
   def compile(request)
-    parse_test(request).merge(source: request[:content].strip)
+    parse_test(request[:test]).merge(source: request[:content].strip)
   end
 
   def run!(test_definition)
-    comparer = comparer_for(test_definition)
-    actual = test_definition[:source]
-
-
-    if comparer.successful_for? actual
-      [comparer.success_message(actual), :passed]
-    else
-      [comparer.error_message(actual), :failed]
-    end
+    metatest.test(test_definition,
+                  test_definition[:examples])
   end
 
   private
+  def metatest
+    Mumukit::Metatest::Framework.new(checker: TextServer::Checker.new,
+                                     runner: Mumukit::Metatest::IdentityRunner.new)
+  end
 
   def parse_test(request)
-    YAML.load(request[:test]).deep_symbolize_keys
+    {examples: YAML.load(request).map { |example| example.deep_symbolize_keys }}
   end
 
-  def comparer_for(test_definition)
-    EqualityComparer.new(test_definition, options_for(test_definition))
-  end
-
-  def options_for(test_definition)
-    options = []
-    options << IgnoreWhitespace if test_definition[:ignore_whitespace]
-    options << IgnoreCase if test_definition[:ignore_case]
-    options
-  end
 end
-
