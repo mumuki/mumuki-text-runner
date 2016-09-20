@@ -8,25 +8,6 @@ GIT
       rest-client
 
 GIT
-  remote: git://github.com/mumuki/mumukit-content-type.git
-  revision: a1d018f3aab610ca799762b24e2cbbfd22f4160a
-  tag: v0.2.0
-  specs:
-    mumukit-content-type (0.2.0)
-      activesupport
-      md_emoji
-      redcarpet (~> 3.3.2)
-      rouge
-
-GIT
-  remote: git://github.com/mumuki/mumukit-inspection.git
-  revision: e1fe69c384d5c23c15808ec792f79a5930cb1a94
-  branch: master
-  specs:
-    mumukit-inspection (0.1.1)
-      mumukit-core (~> 0.2)
-
-GIT
   remote: git://github.com/mumuki/mumukit.git
   revision: 807c089a4b118441039a9504940816f5d0782474
   tag: v2.5.0
@@ -91,6 +72,11 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
+    mumukit-content-type (0.2.1)
+      md_emoji
+      mumukit-core (~> 0.1)
+      redcarpet (~> 3.3.2)
+      rouge
     mumukit-core (0.2.0)
       activesupport (~> 4.1)
       i18n (~> 0.7)
@@ -99,9 +85,6 @@ GEM
       mumukit-core (~> 0.1)
     netrc (0.11.0)
     nokogiri (1.6.8)
-      mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
-    nokogiri (1.6.8-x64-mingw32)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     pkg-config (1.1.7)
@@ -176,8 +159,6 @@ DEPENDENCIES
   codeclimate-test-reporter
   mumukit!
   mumukit-bridge!
-  mumukit-content-type!
-  mumukit-inspection!
   rake
   rspec (= 3.4)
 
