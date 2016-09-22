@@ -1,7 +1,6 @@
 require_relative './spec_helper'
 
 describe 'Options' do
-
   let(:input) { 'Lorem ipsum dolor sit amet' }
 
   context 'when applying IgnoreCase' do
@@ -19,5 +18,4 @@ describe 'Options' do
       expect(parsed_input).to eq 'Loremipsumdolorsitamet'
     end
   end
-
 end

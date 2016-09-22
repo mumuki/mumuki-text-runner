@@ -18,8 +18,8 @@ describe 'integration test' do
                                  extra: '')
 
     expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test1', status: :passed, result: nil}],
-                           status:  :passed,
+                           test_results: [{ title: 'test1', status: :passed, result: nil }],
+                           status: :passed,
                            feedback: '',
                            expectation_results: [],
                            result: ''
@@ -31,11 +31,10 @@ describe 'integration test' do
                                  extra: '')
 
     expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test2', status: :failed, result: '**Dolor amet** is not the right value.'}],
-                           status:  :failed,
+                           test_results: [{ title: 'test2', status: :failed, result: '**Dolor amet** is not the right value.' }],
+                           status: :failed,
                            feedback: '',
                            expectation_results: [],
                            result: ''
   end
-
 end

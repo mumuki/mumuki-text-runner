@@ -2,40 +2,67 @@ require_relative './spec_helper'
 
 describe EqualityComparer do
 
+  describe '#initialize' do
+    let(:modifiers) { comparer.send :instance_variable_get, :@modifiers }
+    let(:expected_value) { comparer.send :instance_variable_get, :@expected }
+
+    context 'when given a string' do
+      let(:comparer) { EqualityComparer.new('foo') }
+
+      it { expect(modifiers).to be_empty }
+      it { expect(expected_value).to eq 'foo' }
+    end
+
+    context 'when given a hash' do
+      let(:comparer) { EqualityComparer.new(expected: 'foo', ignore_case: true) }
+
+      it { expect(modifiers).to contain_exactly IgnoreCase }
+      it { expect(expected_value).to eq 'foo' }
+    end
+  end
+
   describe '#satisfies?' do
-    let(:result) { EqualityComparer.satisfies?(actual, expected) }
-    let(:expected) { 'Lorem ipsum' }
+    context 'without modifiers' do
+      let(:comparer) { EqualityComparer.new('Foo') }
 
-    context 'when they are different' do
-      let(:actual) { 'Ipsum lorem' }
+      it 'returns true if they are the same' do
+        expect(comparer.satisfies?('Foo')).to be true
+      end
 
-      it { expect(result).to be false }
+      it 'returns false if they are different' do
+        expect(comparer.satisfies?('Hey Arnold!')).to be false
+      end
     end
 
-    context 'when they the same' do
-      let(:actual) { 'Lorem ipsum' }
+    context 'with modifiers' do
+      let(:comparer) { EqualityComparer.new(expected: 'foo', ignore_case: true) }
 
-      it { expect(result).to be true }
+      it 'returns true if they are the same' do
+        expect(comparer.satisfies?('Foo')).to be true
+      end
+
+      it 'returns false if they are different' do
+        expect(comparer.satisfies?('Hey Arnold!')).to be false
+      end
     end
-
   end
 
   describe '#locale_error_message' do
-    let(:actual) { 'Foo' }
+    let(:comparer) { EqualityComparer.new('Foo') }
+    let(:error_message) { comparer.locale_error_message }
+
+    before { comparer.satisfies?('Andrew') }
 
     context 'when language is English' do
       before { I18n.locale = :en }
-      let(:error_message) { EqualityComparer.locale_error_message(actual) }
 
-      it { expect(error_message).to eq '**Foo** is not the right value.' }
+      it { expect(error_message).to eq '**Andrew** is not the right value.' }
     end
 
     context 'when language is Spanish' do
       before { I18n.locale = :es }
-      let(:error_message) { EqualityComparer.locale_error_message(actual) }
 
-      it { expect(error_message).to eq '**Foo** no es el valor correcto.' }
+      it { expect(error_message).to eq '**Andrew** no es el valor correcto.' }
     end
-
   end
 end

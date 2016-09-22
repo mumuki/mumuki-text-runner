@@ -1,7 +1,7 @@
 module IgnoreWhitespace
   class << self
     def apply(text)
-      text.gsub(' ', '')
+      text.delete(' ')
     end
   end
 end
