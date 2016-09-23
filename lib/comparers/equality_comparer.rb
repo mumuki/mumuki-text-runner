@@ -1,33 +1,29 @@
 class EqualityComparer
-  def initialize(test_definition, options)
-    @options = options
-    @error_message = test_definition[:error_message]
-    @expected = test_definition[:equal]
+  def initialize(config)
+    opts = config
+    opts = { expected: config } unless config.is_a? Hash
+    @expected = opts[:expected]
+    parse_options(opts)
   end
 
-  def successful_for?(actual)
-    transform(actual) == transform(@expected)
+  def satisfies?(source)
+    @actual = transform(source)
+    @actual == @expected
   end
 
-  def error_message(actual)
-    @error_message || default_error_message(actual)
-  end
-
-  def success_message(actual)
-    ''
-  end
-
-  def transform(text)
-    @options.reduce(text) { |acum, elem| elem.apply acum }
+  def locale_error_message
+    I18n.t 'equality.failure', actual: @actual
   end
 
   private
 
-  def default_error_message(actual)
-    I18n.t "#{i18n_prefix}.failure", { actual: actual }
+  def transform(source)
+    @modifiers.inject(source) { |text, modifier| modifier.apply(text) }
   end
 
-  def i18n_prefix
-    self.class.name.sub('Comparer', '').underscore
+  def parse_options(config)
+    @modifiers = []
+    @modifiers << IgnoreWhitespace if config[:ignore_whitespace]
+    @modifiers << IgnoreCase if config[:ignore_case]
   end
 end
