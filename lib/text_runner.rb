@@ -1,14 +1,12 @@
 require 'mumukit'
 require 'yaml'
-require 'i18n'
-require 'active_support/all'
+
+I18n.load_translations_path File.join(__dir__, 'locales', '*.yml')
 
 Mumukit.runner_name = 'text'
 Mumukit.configure do |config|
   config.content_type = 'markdown'
 end
-
-I18n.load_path += Dir[File.join('.', 'locales', '*.yml')]
 
 require_relative './metadata_hook'
 require_relative './test_hook'
