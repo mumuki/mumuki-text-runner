@@ -12,7 +12,7 @@ class TextTestHook < Mumukit::Hook
   private
 
   def metatest
-    Mumukit::Metatest::Framework.new(checker: TextServer::Checker.new,
+    Mumukit::Metatest::Framework.new(checker: TextChecker.new,
                                      runner: Mumukit::Metatest::IdentityRunner.new)
   end
 

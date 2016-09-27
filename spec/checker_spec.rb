@@ -1,7 +1,7 @@
 require_relative './spec_helper'
 
-describe TextServer::Checker do
-  let(:checker) { TextServer::Checker.new }
+describe TextChecker do
+  let(:checker) { TextChecker.new }
 
   describe '#check_equals' do
     let(:result) { checker.check_equal(test, config) }
