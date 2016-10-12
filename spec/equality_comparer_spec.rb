@@ -1,57 +1,55 @@
 require_relative './spec_helper'
 
-describe EqualityComparer do
+describe EqualityComparator do
 
   describe '#initialize' do
-    let(:modifiers) { comparer.send :instance_variable_get, :@modifiers }
-    let(:expected_value) { comparer.send :instance_variable_get, :@expected }
+    let(:modifiers) { comparator.send :instance_variable_get, :@modifiers }
+    let(:expected_value) { comparator.send :instance_variable_get, :@expected }
 
     context 'when given a string' do
-      let(:comparer) { EqualityComparer.new('foo') }
+      let(:comparator) { EqualityComparator.new('foo') }
 
       it { expect(modifiers).to be_empty }
       it { expect(expected_value).to eq 'foo' }
     end
 
     context 'when given a hash' do
-      let(:comparer) { EqualityComparer.new(expected: 'foo', ignore_case: true) }
+      let(:comparator) { EqualityComparator.new(expected: 'foo', ignore_case: true) }
 
       it { expect(modifiers).to contain_exactly IgnoreCase }
       it { expect(expected_value).to eq 'foo' }
     end
   end
 
-  describe '#satisfies?' do
+  describe 'test' do
     context 'without modifiers' do
-      let(:comparer) { EqualityComparer.new('Foo') }
+      let(:comparator) { EqualityComparator.new('Foo') }
 
       it 'returns true if they are the same' do
-        expect(comparer.satisfies?('Foo')).to be true
+        expect(comparator.compare('Foo')).to be_falsey
       end
 
       it 'returns false if they are different' do
-        expect(comparer.satisfies?('Hey Arnold!')).to be false
+        expect(comparator.compare('Hey Arnold!')).to be_truthy
       end
     end
 
     context 'with modifiers' do
-      let(:comparer) { EqualityComparer.new(expected: 'foo', ignore_case: true) }
+      let(:comparator) { EqualityComparator.new(expected: 'foo', ignore_case: true) }
 
       it 'returns true if they are the same' do
-        expect(comparer.satisfies?('Foo')).to be true
+        expect(comparator.compare('Foo')).to be_falsey
       end
 
       it 'returns false if they are different' do
-        expect(comparer.satisfies?('Hey Arnold!')).to be false
+        expect(comparator.compare('Hey Arnold!')).to be_truthy
       end
     end
   end
 
-  describe '#locale_error_message' do
-    let(:comparer) { EqualityComparer.new('Foo') }
-    let(:error_message) { comparer.locale_error_message }
-
-    before { comparer.satisfies?('Andrew') }
+  describe 'localization' do
+    let(:comparator) { EqualityComparator.new('Foo') }
+    let(:error_message) { comparator.compare('Andrew') }
 
     context 'when language is English' do
       before { I18n.locale = :en }

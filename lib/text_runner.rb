@@ -13,6 +13,6 @@ require_relative './test_hook'
 
 require_relative './checker'
 
-require_relative './comparers/equality_comparer'
+require_relative './comparers/equality_comparator'
 require_relative './options/ignore_whitespace'
 require_relative './options/ignore_case'
