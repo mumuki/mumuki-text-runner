@@ -8,7 +8,7 @@ class EqualityComparer
 
   def satisfies?(source)
     @actual = transform(source)
-    @actual == @expected
+    @actual == transform(@expected)
   end
 
   def locale_error_message
