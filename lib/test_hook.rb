@@ -17,6 +17,18 @@ class TextTestHook < Mumukit::Hook
   end
 
   def parse_test(tests)
-    YAML.load(tests).map { |example| example.deep_symbolize_keys }
+    parsed_test = YAML.load(tests)
+
+    if parsed_test.is_a? Array
+      parsed_test.map { |example| example.deep_symbolize_keys }
+    else
+      [{name: 'test',
+        postconditions: {equal: {
+          expected: parsed_test['equal'],
+          ignore_case: parsed_test['ignore_case'].present?,
+          ignore_whitespace: parsed_test['ignore_whitespace'].present?}}
+       }]
+    end
+
   end
 end
