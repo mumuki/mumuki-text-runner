@@ -2,7 +2,7 @@ require 'mumukit/hook'
 
 class TextTestHook < Mumukit::Hook
   def compile(request)
-    { source: request[:content].strip, examples: parse_test(request[:test]) }
+    {source: request[:content].strip, examples: parse_test(request[:test])}
   end
 
   def run!(test_definition)

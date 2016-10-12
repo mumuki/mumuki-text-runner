@@ -18,7 +18,7 @@ describe 'integration test' do
                                  extra: '')
 
     expect(response).to eq response_type: :structured,
-                           test_results: [{ title: 'test1', status: :passed, result: nil }],
+                           test_results: [{title: 'test1', status: :passed, result: nil}],
                            status: :passed,
                            feedback: '',
                            expectation_results: [],
