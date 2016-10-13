@@ -12,7 +12,7 @@ describe 'integration test' do
 
   after(:all) { Process.kill 'TERM', @pid }
 
-  it 'answers a valid hash when submission fails' do
+  it 'answers a valid hash when submission passes' do
     response = bridge.run_tests!(content: ' Lorem ipsum ',
                                  test: "- name: 'test1'\n  postconditions:\n    equal: 'Lorem ipsum'",
                                  extra: '')
@@ -25,7 +25,7 @@ describe 'integration test' do
                            result: ''
   end
 
-  it 'answers a valid hash when submission passes' do
+  it 'answers a valid hash when submission fails' do
     response = bridge.run_tests!(content: ' Dolor amet ',
                                  test: "- name: 'test2'\n  postconditions:\n    equal: 'Lorem ipsum'",
                                  extra: '')
@@ -37,7 +37,6 @@ describe 'integration test' do
                            expectation_results: [],
                            result: ''
   end
-
 
   it 'answers a valid hash when submission passes with options' do
     response = bridge.run_tests!(content: 'lorem IPSUM    ',
@@ -80,6 +79,22 @@ equal: 'lorem ipsum'
 
     expect(response).to eq response_type: :structured,
                            test_results: [{title: 'test', status: :failed, result: '**LOREM IPSUM** is not the right value.'}],
+                           status: :failed,
+                           feedback: '',
+                           expectation_results: [],
+                           result: ''
+  end
+
+  it 'answers a valid hash when submission fails with simple format and options' do
+    response = bridge.run_tests!(content: '    lorem IPSM',
+                                 test: %q{
+equal: 'lorem ipsum'
+ignore_case: true
+ignore_whitespace: true
+}, extra: '')
+
+    expect(response).to eq response_type: :structured,
+                           test_results: [{title: 'test', status: :failed, result: '**lorem IPSM** is not the right value.'}],
                            status: :failed,
                            feedback: '',
                            expectation_results: [],

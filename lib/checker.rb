@@ -1,7 +1,8 @@
 class TextChecker < Mumukit::Metatest::Checker
   def check_equal(test, config)
-    actual = test[:source]
-    comparer = EqualityComparer.new(config)
-    fail comparer.locale_error_message unless comparer.satisfies?(actual)
+    EqualityComparator
+      .new(config)
+      .compare(test[:source])
+      .try { |error| fail error }
   end
 end
