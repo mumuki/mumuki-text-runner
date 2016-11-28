@@ -23,7 +23,6 @@ class TextTestHook < Mumukit::Hook
     else
       parse_single_scenario_test(parsed_test)
     end
-
   end
 
   def parse_single_scenario_test(parsed_test)
