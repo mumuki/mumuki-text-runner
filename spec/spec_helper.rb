@@ -1,7 +1,7 @@
 require 'rspec'
-require 'codeclimate-test-reporter'
 require 'mumukit/bridge'
+require 'simplecov'
+
+SimpleCov.start
 
 require_relative '../lib/text_runner'
-
-CodeClimate::TestReporter.start
