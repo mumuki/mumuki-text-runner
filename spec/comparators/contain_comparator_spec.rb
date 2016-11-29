@@ -1,26 +1,6 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 describe ContainComparator do
-
-  describe '#initialize' do
-    let(:modifiers) { comparator.send :modifiers }
-    let(:expected_value) { comparator.send :instance_variable_get, :@expected }
-
-    context 'when given a string' do
-      let(:comparator) { ContainComparator.new('foo bar') }
-
-      it { expect(modifiers).to be_empty }
-      it { expect(expected_value).to eq 'foo bar' }
-    end
-
-    context 'when given a hash' do
-      let(:comparator) { ContainComparator.new(expected: 'foo bar', ignore_case: true, ignore_whitespace: false) }
-
-      it { expect(modifiers).to contain_exactly IgnoreCase }
-      it { expect(expected_value).to eq 'foo bar' }
-    end
-  end
-
   describe '#compare' do
     context 'without modifiers' do
       let(:comparator) { ContainComparator.new('Foo bar') }

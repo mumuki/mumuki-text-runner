@@ -1,27 +1,7 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 describe EqualityComparator do
-
-  describe '#initialize' do
-    let(:modifiers) { comparator.send :instance_variable_get, :@modifiers }
-    let(:expected_value) { comparator.send :instance_variable_get, :@expected }
-
-    context 'when given a string' do
-      let(:comparator) { EqualityComparator.new('foo') }
-
-      it { expect(modifiers).to be_empty }
-      it { expect(expected_value).to eq 'foo' }
-    end
-
-    context 'when given a hash' do
-      let(:comparator) { EqualityComparator.new(expected: 'foo', ignore_case: true) }
-
-      it { expect(modifiers).to contain_exactly IgnoreCase }
-      it { expect(expected_value).to eq 'foo' }
-    end
-  end
-
-  describe 'test' do
+  describe '#compare' do
     context 'without modifiers' do
       let(:comparator) { EqualityComparator.new('Foo') }
 
