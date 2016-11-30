@@ -1,6 +1,8 @@
 class TransformableComparator
+  include HashedConfiguration
+
   def initialize(opts)
-    options = opts.is_a?(Hash) ? opts : { expected: opts }
+    options = hash_configuration(opts)
     @expected = options[:expected]
     parse_modifiers(options)
   end

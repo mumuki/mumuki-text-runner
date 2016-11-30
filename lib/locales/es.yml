@@ -4,4 +4,4 @@ es:
   contain:
     failure: '**%{actual}** no contiene el valor correcto.'
   expression:
-      failure: '**%{actual}** no contiene la expresión esperada.'
+      failure: '**%{actual}** no coincide con la expresión correcta.'
