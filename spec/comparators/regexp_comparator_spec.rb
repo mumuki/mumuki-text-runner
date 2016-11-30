@@ -1,13 +1,18 @@
 require_relative '../spec_helper'
 
 describe RegexpComparator do
-  let(:comparator) { RegexpComparator.new('/Foo Bar/') }
+  let(:comparator) { RegexpComparator.new('Foo Bar') }
 
   describe '#compare' do
 
-    it 'fails if expected value is not a valid ruby RegExp' do
-      expect { RegexpComparator.new('Foo Bar') }.to raise_exception 'No regexp found'
-      expect { RegexpComparator.new('2') }.to raise_exception 'No regexp found'
+    it 'fails if expected value is not a string' do
+      expect { RegexpComparator.new(1) }.to raise_exception TypeError
+      expect { RegexpComparator.new([]) }.to raise_exception TypeError
+    end
+
+    it 'ignores options' do
+      comparator = RegexpComparator.new(expected: 'Foo Bar', ignore_case: true)
+      expect(comparator.compare('foo bar')).to be_an_instance_of String
     end
 
     it 'returns nil if matches' do

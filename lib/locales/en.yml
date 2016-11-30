@@ -2,6 +2,6 @@ en:
   equality:
     failure: '**%{actual}** is not the right value.'
   contain:
-    failure: '**%{actual}** does not contains the right value.'
+    failure: '**%{actual}** does not contain the right value.'
   expression:
       failure: '**%{actual}** does not match the expected expression.'

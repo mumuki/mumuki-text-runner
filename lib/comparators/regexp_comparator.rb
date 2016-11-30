@@ -1,10 +1,6 @@
-class RegexpComparator
-  include HashedConfiguration
-
-  def initialize(opts)
-    options = hash_configuration(opts)
-    regexp = eval_regexp(options[:expected])
-    raise 'No regexp found' unless regexp.is_a? Regexp
+class RegexpComparator < HashedConfiguration
+  def parse_options(opts)
+    regexp = eval_regexp(opts[:expected])
     @expected_regexp = regexp
   end
 
@@ -17,10 +13,6 @@ class RegexpComparator
   private
 
   def eval_regexp(expression)
-    begin
-      eval expression
-    rescue
-      nil
-    end
+    Regexp.new(expression)
   end
 end

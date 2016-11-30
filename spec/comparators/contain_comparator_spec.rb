@@ -20,7 +20,7 @@ describe ContainComparator do
     context 'when language is English' do
       before { I18n.locale = :en }
 
-      it { expect(error_message).to eq '**Hey Arnold!** does not contains the right value.' }
+      it { expect(error_message).to eq '**Hey Arnold!** does not contain the right value.' }
     end
 
     context 'when language is Spanish' do

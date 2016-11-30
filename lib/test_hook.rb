@@ -2,7 +2,7 @@ require 'mumukit/hook'
 
 class TextTestHook < Mumukit::Hook
   def compile(request)
-    {source: request[:content].strip, examples: parse_test(request[:test])}
+    { source: request[:content].strip, examples: parse_test(request[:test]) }
   end
 
   def run!(test_definition)
@@ -26,11 +26,11 @@ class TextTestHook < Mumukit::Hook
   end
 
   def parse_single_scenario_test(parsed_test)
-    [{name: 'test',
-      postconditions: {equal: {
-        expected: parsed_test['equal'],
-        ignore_case: parsed_test['ignore_case'].present?,
-        ignore_whitespace: parsed_test['ignore_whitespace'].present?}}
+    [{ name: 'test',
+       postconditions: { equal: {
+           expected: parsed_test['equal'],
+           ignore_case: parsed_test['ignore_case'].present?,
+           ignore_whitespace: parsed_test['ignore_whitespace'].present? } }
      }]
   end
 
