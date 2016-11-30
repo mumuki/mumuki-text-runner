@@ -4,116 +4,165 @@ require 'active_support/all'
 
 describe 'integration test' do
   let(:bridge) { Mumukit::Bridge::Runner.new('http://localhost:4567') }
+  let(:response) { bridge.run_tests!(test) }
 
   before(:all) do
     @pid = Process.spawn 'rackup -p 4567', err: '/dev/null'
     sleep 3
+    I18n.locale = :en
   end
 
   after(:all) { Process.kill 'TERM', @pid }
 
-  it 'answers a valid hash when submission passes' do
-    response = bridge.run_tests!(content: ' Lorem ipsum ',
-                                 test: "- name: 'test1'\n  postconditions:\n    equal: 'Lorem ipsum'",
-                                 extra: '')
+  context 'when submission passes' do
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test1', status: :passed, result: nil}],
-                           status: :passed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
+    context 'given single scenario test' do
+      let(:test) { { content: '    lorem IPSUM',
+                     test: "equal: 'lorem ipsum'\n"\
+                           "ignore_case : true'\n"\
+                           'ignore_whitespace: true' } }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+    context 'given simple format' do
+      context RegexpComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'regexpTest'\n  postconditions:\n    match: 'the dark'",
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('regexpTest') }
+      end
+
+      context EqualityComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'equalityTest'\n  postconditions:\n    equal: 'Rainbow in the dark'",
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('equalityTest') }
+      end
+
+      context ContainComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'containTest'\n  postconditions:\n    contain: 'inbow'",
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('containTest') }
+      end
+    end
+
+    context 'given options' do
+      context RegexpComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'regexpTest'\n"\
+                             "  postconditions:\n"\
+                             "    match:\n"\
+                             "     expected: 'the dark'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('regexpTest') }
+      end
+
+      context EqualityComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'equalityTest'\n"\
+                             "  postconditions:\n"\
+                             "    equal:\n"\
+                             "     expected: 'rAINBOW iN the dark'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('equalityTest') }
+      end
+
+      context ContainComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'containTest'\n"\
+                             "  postconditions:\n"\
+                             "    contain:\n"\
+                             "     expected: 'DaRK'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('containTest') }
+      end
+    end
   end
 
-  it 'answers a valid hash when submission fails' do
-    response = bridge.run_tests!(content: ' Dolor amet ',
-                                 test: "- name: 'test2'\n  postconditions:\n    equal: 'Lorem ipsum'",
-                                 extra: '')
+  context 'when submission fails' do
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test2', status: :failed, result: '**Dolor amet** is not the right value.'}],
-                           status: :failed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
-  end
+    context 'given single scenario test' do
+      let(:test) { { content: '    lorem IPSUM',
+                     test: "equal: 'Quux'\n"\
+                           "ignore_case : true'\n"\
+                           'ignore_whitespace: true' } }
 
-  it 'answers a valid hash when submission passes with options' do
-    response = bridge.run_tests!(content: 'lorem IPSUM    ',
-                                 test: %q{
-- name: 'my test'
-  postconditions:
-    equal:
-      expected: 'Lorem ipsum'
-      ignore_case: true
-      ignore_whitespace: true
-}, extra: '')
+      it { expect(response).to eq invalid_response('test', '**lorem IPSUM** is not the right value.') }
+    end
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'my test', status: :passed, result: nil}],
-                           status: :passed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
-  end
+    context 'given simple format' do
+      context RegexpComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'regexpTest'\n  postconditions:\n    match: 'Quux'",
+                       extra: '' } }
 
-  it 'answers a valid hash when submission passes with simple format' do
-    response = bridge.run_tests!(content: 'lorem ipsum',
-                                 test: %q{
-equal: 'lorem ipsum'
-}, extra: '')
+        it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
+      end
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test', status: :passed, result: nil}],
-                           status: :passed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
-  end
+      context EqualityComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'equalityTest'\n  postconditions:\n    equal: 'Quux'",
+                       extra: '' } }
 
-  it 'answers a valid hash when submission fails with simple format' do
-    response = bridge.run_tests!(content: 'LOREM IPSUM',
-                                 test: %q{
-equal: 'lorem ipsum'
-}, extra: '')
+        it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
+      end
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test', status: :failed, result: '**LOREM IPSUM** is not the right value.'}],
-                           status: :failed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
-  end
+      context ContainComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'containTest'\n  postconditions:\n    contain: 'Quux'",
+                       extra: '' } }
 
-  it 'answers a valid hash when submission fails with simple format and options' do
-    response = bridge.run_tests!(content: '    lorem IPSM',
-                                 test: %q{
-equal: 'lorem ipsum'
-ignore_case: true
-ignore_whitespace: true
-}, extra: '')
+        it { expect(response).to eq invalid_response('containTest', '**Rainbow in the dark** does not contain the right value.') }
+      end
+    end
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test', status: :failed, result: '**lorem IPSM** is not the right value.'}],
-                           status: :failed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
-  end
+    context 'given options' do
+      context RegexpComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'regexpTest'\n"\
+                             "  postconditions:\n"\
+                             "    match:\n"\
+                             "     expected: 'the Dark'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
 
-  it 'answers a valid hash when submission passes with simple format and options' do
-    response = bridge.run_tests!(content: '    lorem IPSUM',
-                                 test: %q{
-equal: 'lorem ipsum'
-ignore_case: true
-ignore_whitespace: true
-}, extra: '')
+        it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
+      end
 
-    expect(response).to eq response_type: :structured,
-                           test_results: [{title: 'test', status: :passed, result: nil}],
-                           status: :passed,
-                           feedback: '',
-                           expectation_results: [],
-                           result: ''
+      context EqualityComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'equalityTest'\n"\
+                             "  postconditions:\n"\
+                             "    equal:\n"\
+                             "     expected: 'Rainbow   in the dark'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
+
+        it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
+      end
+
+      context ContainComparator do
+        let(:test) { { content: 'Rainbow in the dark',
+                       test: "- name: 'containTest'\n"\
+                             "  postconditions:\n"\
+                             "    contain:\n"\
+                             "     expected: 'DARRRk'\n"\
+                             '     ignore_case: true',
+                       extra: '' } }
+
+        it { expect(response).to eq invalid_response('containTest', '**Rainbow in the dark** does not contain the right value.') }
+      end
+    end
   end
 end

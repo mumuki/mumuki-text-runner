@@ -1,34 +1,20 @@
 require_relative '../spec_helper'
 
 describe EqualityComparator do
+  let(:comparator) { EqualityComparator.new('Foo Bar') }
+
   describe '#compare' do
-    context 'without modifiers' do
-      let(:comparator) { EqualityComparator.new('Foo') }
 
-      it 'returns true if they are the same' do
-        expect(comparator.compare('Foo')).to be_falsey
-      end
-
-      it 'returns false if they are different' do
-        expect(comparator.compare('Hey Arnold!')).to be_truthy
-      end
+    it 'returns nil if equal' do
+      expect(comparator.compare('Foo Bar')).to be_nil
     end
 
-    context 'with modifiers' do
-      let(:comparator) { EqualityComparator.new(expected: 'foo', ignore_case: true) }
-
-      it 'returns true if they are the same' do
-        expect(comparator.compare('Foo')).to be_falsey
-      end
-
-      it 'returns false if they are different' do
-        expect(comparator.compare('Hey Arnold!')).to be_truthy
-      end
+    it 'returns the failure message if different' do
+      expect(comparator.compare('Hey Arnold!')).to be_an_instance_of String
     end
   end
 
   describe 'localization' do
-    let(:comparator) { EqualityComparator.new('Foo') }
     let(:error_message) { comparator.compare('Andrew') }
 
     context 'when language is English' do

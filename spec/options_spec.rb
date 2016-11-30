@@ -3,7 +3,7 @@ require_relative './spec_helper'
 describe 'Options' do
   let(:input) { 'Lorem ipsum dolor sit amet' }
 
-  context 'when applying IgnoreCase' do
+  context IgnoreCase do
     let(:parsed_input) { IgnoreCase.apply(input) }
 
     it 'returns the text in lowercase' do
@@ -11,7 +11,7 @@ describe 'Options' do
     end
   end
 
-  context 'when applying IgnoreWhitespace' do
+  context IgnoreWhitespace do
     let(:parsed_input) { IgnoreWhitespace.apply(input) }
 
     it 'returns the text without spaces' do

@@ -18,47 +18,23 @@ describe TextChecker do
   end
 
   context 'checks' do
+    let(:checker) do
+      TextChecker.compare(equal: EqualityComparator)
+      TextChecker.new
+    end
     let(:test) { { source: 'Lorem ipsum dolor sit amet' } }
+    let(:result) { checker.check_equal(test, config) }
 
-    describe '#check_equals' do
-      let(:checker) do
-        TextChecker.compare(equal: EqualityComparator)
-        TextChecker.new
-      end
-      let(:result) { checker.check_equal(test, config) }
+    context 'when it passes' do
+      let(:config) { { expected: 'Lorem ipsum DOLOR SIT amet', ignore_case: true } }
 
-      context 'when it passes' do
-        let(:config) { { expected: 'Lorem ipsum DOLOR SIT amet', ignore_case: true } }
-
-        it { expect { result }.not_to raise_error }
-      end
-
-      context 'when it fails' do
-        let(:config) { { expected: 'Hey!' } }
-
-        it { expect { result }.to raise_error Mumukit::Metatest::Failed }
-      end
+      it { expect { result }.not_to raise_error }
     end
 
-    describe '#check_contains' do
-      let(:checker) do
-        TextChecker.compare(contain: ContainComparator)
-        TextChecker.new
-      end
-      let(:result) { checker.check_contain(test, config) }
+    context 'when it fails' do
+      let(:config) { { expected: 'Hey!' } }
 
-
-      context 'when it passes' do
-        let(:config) { { expected: 'IPSUM dolOr', ignore_case: true } }
-
-        it { expect { result }.not_to raise_error }
-      end
-
-      context 'when it fails' do
-        let(:config) { { expected: 'Hey!' } }
-
-        it { expect { result }.to raise_error Mumukit::Metatest::Failed }
-      end
+      it { expect { result }.to raise_error Mumukit::Metatest::Failed }
     end
   end
 end
