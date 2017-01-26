@@ -5,9 +5,9 @@ class TextChecker < Mumukit::Metatest::Checker
     comparator_class = relation_hash.values.first
     define_method "check_#{type}".to_sym do |test, config|
       comparator_class
-          .new(config)
-          .compare(test[:source])
-          .try { |error| fail error }
+        .new(config.is_a?(Hash) ? config : {expected: config})
+        .compare(test[:source])
+        .try { |error| fail error }
     end
   end
 
