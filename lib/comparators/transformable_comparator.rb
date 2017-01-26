@@ -1,11 +1,11 @@
-class TransformableComparator < HashedConfiguration
+class TransformableComparator
 
-  private
-
-  def parse_options(opts)
+  def initialize(opts)
     @expected = opts[:expected]
     parse_modifiers(opts)
   end
+
+  private
 
   def modifiers
     @modifiers

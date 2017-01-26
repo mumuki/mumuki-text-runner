@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 describe ContainComparator do
-  let(:comparator) { ContainComparator.new('Foo bar') }
+  let(:comparator) { ContainComparator.new(expected: 'Foo bar') }
 
   describe '#compare' do
 

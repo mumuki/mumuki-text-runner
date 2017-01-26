@@ -1,42 +1,51 @@
 require_relative '../spec_helper'
 
 describe RegexpComparator do
-  let(:comparator) { RegexpComparator.new('Foo Bar') }
+  describe '#initialize' do
+    context 'when expected value is not a string' do
+      it { expect { RegexpComparator.new(expected: 1) }.to raise_exception TypeError }
+      it { expect { RegexpComparator.new(expected: []) }.to raise_exception TypeError }
+    end
+  end
 
   describe '#compare' do
+    context 'when matches returns nil' do
+      subject { RegexpComparator.new(expected: 'Foo').compare('Foo') }
 
-    it 'fails if expected value is not a string' do
-      expect { RegexpComparator.new(1) }.to raise_exception TypeError
-      expect { RegexpComparator.new([]) }.to raise_exception TypeError
+      it { is_expected.to be_nil }
     end
 
-    it 'ignores options' do
-      comparator = RegexpComparator.new(expected: 'Foo Bar', ignore_case: true)
-      expect(comparator.compare('foo bar')).to be_an_instance_of String
-    end
+    context 'when does not match' do
+      let(:opts) { {expected: 'Foo'} }
+      subject { RegexpComparator.new(opts).compare('Bar') }
 
-    it 'returns nil if matches' do
-      expect(comparator.compare('Foo Bar')).to be_nil
-    end
+      context 'returns default message' do
+        before { I18n.locale = :en }
 
-    it 'returns the failure message if does not match' do
-      expect(comparator.compare('Foo bar!')).to be_an_instance_of String
+        it { is_expected.to eq('**Bar** does not match the expected expression.') }
+      end
+
+      context 'given custom message' do
+        let(:opts) { {expected: 'Foo', error: 'Custom error'} }
+
+        it { is_expected.to eq('Custom error') }
+      end
     end
   end
 
   describe 'localization' do
-    let(:error_message) { comparator.compare('Andrew') }
+    subject { RegexpComparator.new(expected: 'John').compare('Andrew') }
 
     context 'when language is English' do
       before { I18n.locale = :en }
 
-      it { expect(error_message).to eq '**Andrew** does not match the expected expression.' }
+      it { is_expected.to eq '**Andrew** does not match the expected expression.' }
     end
 
     context 'when language is Spanish' do
       before { I18n.locale = :es }
 
-      it { expect(error_message).to eq '**Andrew** no coincide con la expresión correcta.' }
+      it { is_expected.to eq '**Andrew** no coincide con la expresión correcta.' }
     end
   end
 end

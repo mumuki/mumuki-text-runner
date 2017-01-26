@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 describe EqualityComparator do
-  let(:comparator) { EqualityComparator.new('Foo Bar') }
+  let(:comparator) { EqualityComparator.new(expected: 'Foo Bar') }
 
   describe '#compare' do
 
