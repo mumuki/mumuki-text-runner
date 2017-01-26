@@ -1,7 +1,11 @@
-class ContainComparator < TransformableComparator
-  def compare(source)
-    unless transform(source).include? transform(@expected)
-      I18n.t 'contain.failure', actual: source
-    end
+class ContainComparator < Comparator
+  def success?(source)
+    transform(source).include? transform(@expected)
+  end
+
+  private
+
+  def error_message(source)
+    I18n.t 'contain.failure', actual: source
   end
 end

@@ -11,7 +11,7 @@ end
 require_relative './metadata_hook'
 require_relative './test_hook'
 
-require_relative './comparators/transformable_comparator'
+require_relative './comparators/comparator'
 require_relative './comparators/equality_comparator'
 require_relative './comparators/contain_comparator'
 require_relative './comparators/regexp_comparator'

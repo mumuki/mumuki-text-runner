@@ -1,7 +1,12 @@
-class EqualityComparator < TransformableComparator
-  def compare(source)
-    if transform(source) != transform(@expected)
-      I18n.t 'equality.failure', actual: source
-    end
+class EqualityComparator < Comparator
+  def success?(source)
+    transform(source) == transform(@expected)
   end
+
+  private
+
+  def error_message(source)
+    I18n.t 'equality.failure', actual: source
+  end
+
 end

@@ -1,20 +1,17 @@
-class RegexpComparator
-  def initialize(opts)
-    regexp = eval_regexp(opts[:expected])
-    @expected_regexp = regexp
-    @error = opts[:error]
-  end
+class RegexpComparator < Comparator
 
-  def compare(source)
-    unless source =~ @expected_regexp
-      error_message(source)
-    end
+  def success?(source)
+    @expected_regexp.match(source)
   end
 
   private
 
+  def setup
+    @expected_regexp = eval_regexp(@expected)
+  end
+
   def error_message(source)
-    @error || (I18n.t 'expression.failure', actual: source)
+    I18n.t 'expression.failure', actual: source
   end
 
   def eval_regexp(expression)
