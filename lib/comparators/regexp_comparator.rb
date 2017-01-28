@@ -1,10 +1,10 @@
 class RegexpComparator < Comparator
 
-  def success?(source)
-    @expected_regexp.match(source)
-  end
-
   private
+
+  def success?(source)
+    !!@expected_regexp.match(source)
+  end
 
   def setup
     @expected_regexp = eval_regexp(@expected)

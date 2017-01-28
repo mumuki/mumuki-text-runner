@@ -8,44 +8,37 @@ describe RegexpComparator do
     end
   end
 
-  describe '#compare' do
-    context 'when matches returns nil' do
-      subject { RegexpComparator.new(expected: 'Foo').compare('Foo') }
+  describe '#success?' do
+    let(:comparator) { RegexpComparator.new(expected: 'foo|bar*') }
+    subject { comparator.send(:success?, actual) }
 
-      it { is_expected.to be_nil }
+    context 'when the regex matches' do
+      let(:actual) { 'foobarbar' }
+
+      it { is_expected.to be true }
     end
 
     context 'when does not match' do
-      let(:opts) { {expected: 'Foo'} }
-      subject { RegexpComparator.new(opts).compare('Bar') }
+      let(:actual) { 'FooBar' }
 
-      context 'returns default message' do
-        before { I18n.locale = :en }
-
-        it { is_expected.to eq('**Bar** does not match the expected expression.') }
-      end
-
-      context 'given custom message' do
-        let(:opts) { {expected: 'Foo', error: 'Custom error'} }
-
-        it { is_expected.to eq('Custom error') }
-      end
+      it { is_expected.to be false }
     end
   end
 
-  describe 'localization' do
-    subject { RegexpComparator.new(expected: 'John').compare('Andrew') }
+  describe '#error_message' do
+    let(:comparator) { RegexpComparator.new(expected: 'zzz') }
+    subject { comparator.send(:error_message, 'Hey Arnold!') }
 
     context 'when language is English' do
       before { I18n.locale = :en }
 
-      it { is_expected.to eq '**Andrew** does not match the expected expression.' }
+      it { is_expected.to eq '**Hey Arnold!** does not match the expected expression.' }
     end
 
     context 'when language is Spanish' do
       before { I18n.locale = :es }
 
-      it { is_expected.to eq '**Andrew** no coincide con la expresión correcta.' }
+      it { is_expected.to eq '**Hey Arnold!** no coincide con la expresión correcta.' }
     end
   end
 end

@@ -22,17 +22,17 @@ describe TextChecker do
       TextChecker.compare(equal: EqualityComparator)
       TextChecker.new
     end
-    let(:test) { { source: 'Lorem ipsum dolor sit amet' } }
+    let(:test) { {source: 'Lorem ipsum dolor sit amet'} }
     let(:result) { checker.check_equal(test, config) }
 
     context 'when it passes' do
-      let(:config) { { expected: 'Lorem ipsum DOLOR SIT amet', ignore_case: true } }
+      let(:config) { {expected: 'Lorem ipsum DOLOR SIT amet', ignore_case: true} }
 
       it { expect { result }.not_to raise_error }
     end
 
     context 'when it fails' do
-      let(:config) { { expected: 'Hey!' } }
+      let(:config) { {expected: 'Hey!'} }
 
       it { expect { result }.to raise_error Mumukit::Metatest::Failed }
     end

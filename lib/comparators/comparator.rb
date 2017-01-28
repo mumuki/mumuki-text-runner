@@ -3,17 +3,14 @@ class Comparator
     @expected = opts[:expected]
     @error_message = opts[:error]
     @config = opts
-    setup
+    setup if respond_to?(:setup, true)
   end
 
   def compare(source)
-    (@error_message || error_message(source)) unless success?(source)
+    @error_message || error_message(source) unless success?(source)
   end
 
   private
-
-  def setup
-  end
 
   def modifiers
     modifiers = []
