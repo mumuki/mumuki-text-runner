@@ -1,32 +1,37 @@
 require_relative '../spec_helper'
 
 describe EqualityComparator do
-  let(:comparator) { EqualityComparator.new('Foo Bar') }
+  let(:comparator) { EqualityComparator.new(expected: 'Foo bar') }
 
-  describe '#compare' do
+  describe '#success?' do
+    subject { comparator.send(:success?, actual) }
 
-    it 'returns nil if equal' do
-      expect(comparator.compare('Foo Bar')).to be_nil
+    context 'when is the same' do
+      let(:actual) { 'Foo bar' }
+
+      it { is_expected.to be true }
     end
 
-    it 'returns the failure message if different' do
-      expect(comparator.compare('Hey Arnold!')).to be_an_instance_of String
+    context 'when is not the same' do
+      let(:actual) { 'Foo quux baz' }
+
+      it { is_expected.to be false }
     end
   end
 
-  describe 'localization' do
-    let(:error_message) { comparator.compare('Andrew') }
+  describe '#error_message' do
+    subject { comparator.send(:error_message, 'Hey Arnold!') }
 
     context 'when language is English' do
       before { I18n.locale = :en }
 
-      it { expect(error_message).to eq '**Andrew** is not the right value.' }
+      it { is_expected.to eq '**Hey Arnold!** is not the right value.' }
     end
 
     context 'when language is Spanish' do
       before { I18n.locale = :es }
 
-      it { expect(error_message).to eq '**Andrew** no es el valor correcto.' }
+      it { is_expected.to eq '**Hey Arnold!** no es el valor correcto.' }
     end
   end
 end

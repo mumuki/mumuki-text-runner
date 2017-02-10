@@ -1,16 +1,18 @@
-class RegexpComparator < HashedConfiguration
-  def parse_options(opts)
-    regexp = eval_regexp(opts[:expected])
-    @expected_regexp = regexp
-  end
-
-  def compare(source)
-    unless source =~ @expected_regexp
-      I18n.t 'expression.failure', actual: source
-    end
-  end
+class RegexpComparator < Comparator
 
   private
+
+  def success?(source)
+    !!@expected_regexp.match(source)
+  end
+
+  def setup
+    @expected_regexp = eval_regexp(@expected)
+  end
+
+  def error_message(source)
+    I18n.t 'expression.failure', actual: source
+  end
 
   def eval_regexp(expression)
     Regexp.new(expression)
