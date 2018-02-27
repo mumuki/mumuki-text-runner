@@ -128,16 +128,44 @@ describe 'integration test' do
     end
 
     context 'given options' do
-      context RegexpComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'regexpTest'\n"\
-                             "  postconditions:\n"\
-                             "    match:\n"\
-                             "     expected: 'the Dark'\n"\
-                             '     ignore_case: true',
-                       extra: '' } }
+      describe RegexpComparator do
+        context 'simple text' do
+          let(:test) { { content: 'Rainbow in the dark',
+                         test: "- name: 'regexpTest'\n"\
+                               "  postconditions:\n"\
+                               "    match:\n"\
+                               "     expected: 'the Dark'\n"\
+                               '     ignore_case: true',
+                         extra: '' } }
 
-        it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
+          it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
+        end
+
+        context 'true regular expression' do
+          context 'when valid' do
+            let(:test) { {
+                 content: '245.10.20.2',
+                 test: %q{
+- name: it is a proper ip
+  postconditions:
+    match: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/},
+  extra: '' } }
+
+            it { expect(response).to eq valid_response('it is a proper ip') }
+          end
+          context 'when invalid' do
+            let(:test) { {
+                 content: '1200.10.20.2',
+                 test: %q{
+- name: it is a proper ip
+  postconditions:
+    match: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/},
+  extra: '' } }
+
+            it { expect(response).to eq invalid_response('it is a proper ip',
+              '**1200.10.20.2** does not match the expected expression.') }
+          end
+        end
       end
 
       context EqualityComparator do
