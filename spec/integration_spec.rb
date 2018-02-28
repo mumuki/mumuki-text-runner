@@ -148,7 +148,7 @@ describe 'integration test' do
                  test: %q{
 - name: it is a proper ip
   postconditions:
-    match: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/},
+    match: !ruby/regexp '/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/'},
   extra: '' } }
 
             it { expect(response).to eq valid_response('it is a proper ip') }
@@ -159,7 +159,7 @@ describe 'integration test' do
                  test: %q{
 - name: it is a proper ip
   postconditions:
-    match: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/},
+    match: !ruby/regexp '/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/'},
   extra: '' } }
 
             it { expect(response).to eq invalid_response('it is a proper ip',
