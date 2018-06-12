@@ -4,4 +4,6 @@ es:
   contain:
     failure: '**%{actual}** no contiene el valor correcto.'
   expression:
-      failure: '**%{actual}** no coincide con la expresión correcta.'
+    failure: '**%{actual}** no coincide con la expresión correcta.'
+  valid_ip:
+    failure: '**%{actual}** no es una dirección IP válida.'

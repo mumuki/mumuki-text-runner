@@ -1,5 +1,5 @@
 class Comparator
-  def initialize(opts)
+  def initialize(opts = {})
     @expected = opts[:expected]
     @error_message = opts[:error]
     @config = opts

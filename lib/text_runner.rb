@@ -16,6 +16,7 @@ require_relative './comparators/comparator'
 require_relative './comparators/equality_comparator'
 require_relative './comparators/contain_comparator'
 require_relative './comparators/regexp_comparator'
+require_relative './comparators/valid_ip_comparator'
 
 require_relative './options/ignore_whitespace'
 require_relative './options/ignore_case'
