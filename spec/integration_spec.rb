@@ -87,6 +87,16 @@ describe 'integration test' do
 
         it { expect(response).to eq valid_response('containTest') }
       end
+
+      context ValidIpComparator do
+        let(:test) { { content: '8.8.4.4',
+                       test: "- name: 'validIpTest'\n"\
+                             "  postconditions:\n"\
+                             "    valid_ip: true",
+                       extra: '' } }
+
+        it { expect(response).to eq valid_response('validIpTest') }
+      end
     end
   end
 

@@ -14,4 +14,5 @@ class TextChecker < Mumukit::Metatest::Checker
   compare :match => RegexpComparator
   compare :equal => EqualityComparator
   compare :contain => ContainComparator
+  compare :valid_ip => ValidIpComparator
 end
