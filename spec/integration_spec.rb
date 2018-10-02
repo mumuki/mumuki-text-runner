@@ -88,26 +88,43 @@ describe 'integration test' do
         it { expect(response).to eq valid_response('containTest') }
       end
 
-      describe 'json mode' do
+      describe 'keys mode' do
         let(:test) {
           {
             content: { first: 'walter white', second: 'hello, hello!', third: '0.0.0.0' }.to_yaml,
-            test: %q{
-                - name: 'miscTest'
-                  postconditions:
-                    keys:
-                      first:
-                        equal: walter white
-                      second:
-                        contain: hello
-                      third:
-                        valid_ip: true
-                },
+            test: test_spec,
             extra: ''
           }
         }
 
-        it { expect(response).to eq valid_response('miscTest') }
+        describe 'standard test' do
+          let(:test_spec) {%q{
+            - name: 'miscTest'
+              postconditions:
+                keys:
+                  first:
+                    equal: walter white
+                  second:
+                    contain: hello
+                  third:
+                    valid_ip: true
+          }}
+          it { expect(response).to eq valid_response('miscTest') }
+        end
+
+        describe 'compact test' do
+          let(:test_spec) {%q{
+            - name: 'miscTest'
+              keys:
+                first:
+                  equal: walter white
+                second:
+                  contain: hello
+                third:
+                  valid_ip: true
+          }}
+          it { expect(response).to eq valid_response('miscTest') }
+        end
       end
 
       context ValidIpComparator do

@@ -2,10 +2,11 @@ require_relative './spec_helper'
 
 describe TextChecker do
   let(:checker) { TextChecker.new }
-  subject { checker.check({source: source}, {name: 'test', postconditions: assertions}) }
+  let(:example) { { name: 'test', postconditions: assertions } }
+  subject { checker.check({source: source}, example) }
 
   context 'when using plain assertions' do
-    let(:assertions) {{ equal: 'hello' }}
+    let(:assertions) { { equal: 'hello' } }
 
     context 'when pass' do
       let(:source) { 'hello' }
@@ -19,7 +20,7 @@ describe TextChecker do
   end
 
   context 'when using ignore case flags' do
-    let(:assertions) {{ equal: {expected: 'HELLO', ignore_case: true} }}
+    let(:assertions) { { equal: {expected: 'HELLO', ignore_case: true } } }
 
     context 'when pass' do
       let(:source) { 'hello' }
@@ -33,7 +34,7 @@ describe TextChecker do
   end
 
   context 'when using ignore space flags' do
-    let(:assertions) {{ equal: {expected: 'hello world', ignore_whitespace: true} }}
+    let(:assertions) { { equal: {expected: 'hello world', ignore_whitespace: true } } }
 
     context 'when pass' do
       let(:source) { '  hello    world' }
