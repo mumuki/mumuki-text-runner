@@ -17,6 +17,7 @@ class Comparator
     modifiers = []
     modifiers << IgnoreWhitespace if @config[:ignore_whitespace]
     modifiers << IgnoreCase if @config[:ignore_case]
+    modifiers << Key.new(@config[:key]) if @config[:key]
     modifiers
   end
 

@@ -20,5 +20,6 @@ require_relative './comparators/valid_ip_comparator'
 
 require_relative './options/ignore_whitespace'
 require_relative './options/ignore_case'
+require_relative './options/key'
 
 require_relative './checker'
