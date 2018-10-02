@@ -47,7 +47,14 @@ describe TextChecker do
   end
 
   context 'when using key flags' do
-    let(:assertions) {{ equal: {expected: 'Lovelace', key: :surname} }}
+    let(:assertions) {
+      {
+        keys: {
+          surname: { equal: { expected: 'Lovelace' } },
+          name: { equal: { expected: 'Ada' } }
+        }
+      }
+    }
 
     context 'when pass with yaml' do
       let(:source) { { name: 'Ada', surname: 'Lovelace' }.to_yaml }
@@ -61,17 +68,17 @@ describe TextChecker do
 
     context 'when do not pass because of content' do
       let(:source) { { name: 'Ada', surname: 'lovelace' }.to_yaml }
-      it { is_expected.to eq ['test', :failed, '**lovelace** does not contain the right value.'] }
+      it { is_expected.to eq ['test', :failed, '**lovelace** is not the right value.'] }
     end
 
     context 'when do not pass because of format' do
       let(:source) { { name: 'Ada', surname: 'lovelace' }.to_yaml }
-      it { is_expected.to eq ['test', :failed, '**lovelace** does not contain the right value.'] }
+      it { is_expected.to eq ['test', :failed, '**lovelace** is not the right value.'] }
     end
   end
 
   context 'when using non-key combined flags' do
-    let(:assertions) {{ contain: {expected: 'b.c', ignore_whitespace: true, ignore_case: true} }}
+    let(:assertions) { { contain: { expected: 'b.c', ignore_whitespace: true, ignore_case: true } } }
 
     context 'when pass' do
       let(:source) { 'A . B . C' }
@@ -85,7 +92,14 @@ describe TextChecker do
   end
 
   context 'when using combined key flags' do
-    let(:assertions) {{ contain: {expected: 'lovelace', ignore_whitespace: true, ignore_case: true, key: :surname} }}
+    let(:assertions) {
+      {
+        keys: {
+          surname: { contain: { expected: 'lovelace', ignore_whitespace: true, ignore_case: true } },
+          name: { equal: 'Ada' }
+        }
+      }
+    }
 
     context 'when pass with yaml' do
       let(:source) { { name: 'Ada', surname: 'countess of lovelace' }.to_yaml }
