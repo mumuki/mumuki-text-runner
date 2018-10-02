@@ -1,40 +1,34 @@
 require_relative './spec_helper'
 
 describe TextChecker do
+  let(:checker) { TextChecker.new }
+  subject { checker.check({source: source}, {name: 'test', postconditions: assertions}) }
 
-  describe '.compare' do
-    let(:checker) { TextChecker }
+  context 'when using plain assertions' do
+    let(:assertions) {{ equal: 'hello' }}
 
-    context 'when hash arity is not one it fails' do
-
-      it { expect { checker.compare({}) }.to raise_exception 'Invalid hash arity' }
-      it { expect { checker.compare(a: 1, b: 2) }.to raise_exception 'Invalid hash arity' }
+    context 'when pass' do
+      let(:source) { 'hello' }
+      it { is_expected.to eq ['test', :passed, nil] }
     end
 
-    it 'defines an instance method' do
-      checker.compare(foo: 1)
-      expect(checker.new.respond_to? :check_foo).to be true
+    context 'when do not pass' do
+      let(:source) { 'world' }
+      it { is_expected.to eq ['test', :failed, '**world** is not the right value.'] }
     end
   end
 
-  context 'checks' do
-    let(:checker) do
-      TextChecker.compare(equal: EqualityComparator)
-      TextChecker.new
-    end
-    let(:test) { {source: 'Lorem ipsum dolor sit amet'} }
-    let(:result) { checker.check_equal(test, config) }
+  context 'when using ignore case flags' do
+    let(:assertions) {{ equal: {expected: 'HELLO', ignore_case: true} }}
 
-    context 'when it passes' do
-      let(:config) { {expected: 'Lorem ipsum DOLOR SIT amet', ignore_case: true} }
-
-      it { expect { result }.not_to raise_error }
+    context 'when pass' do
+      let(:source) { 'hello' }
+      it { is_expected.to eq ['test', :passed, nil] }
     end
 
-    context 'when it fails' do
-      let(:config) { {expected: 'Hey!'} }
-
-      it { expect { result }.to raise_error Mumukit::Metatest::Failed }
+    context 'when do not pass' do
+      let(:source) { 'world' }
+      it { is_expected.to eq ['test', :failed, '**world** is not the right value.'] }
     end
   end
 end
