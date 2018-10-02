@@ -4,7 +4,7 @@ describe ContainComparator do
   let(:comparator) { ContainComparator.new(expected: 'Foo bar') }
 
   describe '#success?' do
-    subject { comparator.send(:success?, actual) }
+    subject { comparator.success? actual }
 
     context 'when is contained' do
       let(:actual) { 'Foo bar baz' }

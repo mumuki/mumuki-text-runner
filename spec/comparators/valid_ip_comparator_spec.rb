@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe ValidIpComparator do
   describe '#success?' do
     let(:comparator) { ValidIpComparator.new }
-    subject { comparator.send(:success?, actual) }
+    subject { comparator.success? actual }
 
     context 'when the ip is valid' do
       let(:actual) { '127.0.0.1' }

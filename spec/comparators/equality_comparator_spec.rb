@@ -4,7 +4,7 @@ describe EqualityComparator do
   let(:comparator) { EqualityComparator.new(expected: 'Foo bar') }
 
   describe '#success?' do
-    subject { comparator.send(:success?, actual) }
+    subject { comparator.success? actual }
 
     context 'when is the same' do
       let(:actual) { 'Foo bar' }

@@ -148,7 +148,7 @@ describe 'integration test' do
                                '     ignore_case: true',
                          extra: '' } }
 
-          it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
+          it { expect(response).to eq valid_response('regexpTest') }
         end
 
         context 'true regular expression' do
