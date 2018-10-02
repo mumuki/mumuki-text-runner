@@ -3,7 +3,6 @@ class Comparator
     @expected = opts[:expected]
     @error_message = opts[:error]
     @config = opts
-    setup if respond_to?(:setup, true)
   end
 
   def compare(source)

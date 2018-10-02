@@ -1,13 +1,6 @@
 require_relative '../spec_helper'
 
 describe RegexpComparator do
-  describe '#initialize' do
-    context 'when expected value is not a string' do
-      it { expect { RegexpComparator.new(expected: 1) }.to raise_exception TypeError }
-      it { expect { RegexpComparator.new(expected: []) }.to raise_exception TypeError }
-    end
-  end
-
   describe '#success?' do
     let(:comparator) { RegexpComparator.new(expected: 'foo|bar*') }
     subject { comparator.send(:success?, actual) }
