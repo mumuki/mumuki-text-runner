@@ -17,35 +17,59 @@ describe 'integration test' do
   context 'when submission passes' do
 
     context 'given single scenario test' do
-      let(:test) { { content: '    lorem IPSUM',
-                     test: "equal: 'lorem ipsum'\n"\
-                           "ignore_case : true'\n"\
-                           'ignore_whitespace: true' } }
+      let(:test) {
+        {
+          content: '    lorem IPSUM',
+          test: %q{
+            equal: 'lorem ipsum'
+            ignore_case : true
+            ignore_whitespace: true
+          }
+        }
+      }
 
       it { expect(response).to eq valid_response('test') }
     end
 
     context 'given simple format' do
       context RegexpComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'regexpTest'\n  postconditions:\n    match: 'the dark'",
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'regexpTest'
+              postconditions:
+                match: 'the dark'},
+            extra: '' }
+          }
 
         it { expect(response).to eq valid_response('regexpTest') }
       end
 
       context EqualityComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'equalityTest'\n  postconditions:\n    equal: 'Rainbow in the dark'",
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'equalityTest'
+              postconditions:
+                equal: 'Rainbow in the dark'},
+            extra: '' }
+          }
 
         it { expect(response).to eq valid_response('equalityTest') }
       end
 
       context ContainComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'containTest'\n  postconditions:\n    contain: 'inbow'",
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'containTest'
+              postconditions:
+                contain: 'inbow'},
+            extra: '' }
+          }
 
         it { expect(response).to eq valid_response('containTest') }
       end
@@ -53,37 +77,52 @@ describe 'integration test' do
 
     context 'given options' do
       context RegexpComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'regexpTest'\n"\
-                             "  postconditions:\n"\
-                             "    match:\n"\
-                             "     expected: 'the dark'\n"\
-                             '     ignore_case: true',
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'regexpTest'
+              postconditions:
+                match:
+                  expected: 'the dark'
+                  ignore_case: true
+            },
+            extra: '' }
+         }
 
         it { expect(response).to eq valid_response('regexpTest') }
       end
 
       context EqualityComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'equalityTest'\n"\
-                             "  postconditions:\n"\
-                             "    equal:\n"\
-                             "     expected: 'rAINBOW iN the dark'\n"\
-                             '     ignore_case: true',
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'equalityTest'
+              postconditions:
+                equal:
+                  expected: 'rAINBOW iN the dark'
+                  ignore_case: true
+            },
+            extra: '' }
+          }
 
         it { expect(response).to eq valid_response('equalityTest') }
       end
 
       context ContainComparator do
-        let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'containTest'\n"\
-                             "  postconditions:\n"\
-                             "    contain:\n"\
-                             "     expected: 'DaRK'\n"\
-                             '     ignore_case: true',
-                       extra: '' } }
+        let(:test) {
+          {
+            content: 'Rainbow in the dark',
+            test: %q{
+            - name: 'containTest'
+              postconditions:
+                contain:
+                  expected: 'DaRK'
+                  ignore_case: true
+            },
+            extra: '' }
+          }
 
         it { expect(response).to eq valid_response('containTest') }
       end
@@ -128,11 +167,15 @@ describe 'integration test' do
       end
 
       context ValidIpComparator do
-        let(:test) { { content: '8.8.4.4',
-                       test: "- name: 'validIpTest'\n"\
-                             "  postconditions:\n"\
-                             "    valid_ip: true",
-                       extra: '' } }
+        let(:test) {
+          {
+            content: '8.8.4.4',
+            test: %q{
+            - name: 'validIpTest'
+              postconditions:
+                valid_ip: true"
+            },
+            extra: '' } }
 
         it { expect(response).to eq valid_response('validIpTest') }
       end
@@ -142,10 +185,16 @@ describe 'integration test' do
   context 'when submission fails' do
 
     context 'given single scenario test' do
-      let(:test) { { content: '    lorem IPSUM',
-                     test: "equal: 'Quux'\n"\
-                           "ignore_case : true'\n"\
-                           'ignore_whitespace: true' } }
+      let(:test) {
+        {
+          content: '    lorem IPSUM',
+          test: %q{
+            equal: 'Quux'
+            ignore_case : true
+            ignore_whitespace: true
+          }
+        }
+      }
 
       it { expect(response).to eq invalid_response('test', '**lorem IPSUM** is not the right value.') }
     end
@@ -153,7 +202,11 @@ describe 'integration test' do
     context 'given simple format' do
       context RegexpComparator do
         let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'regexpTest'\n  postconditions:\n    match: 'Quux'",
+                       test: %q{
+                        - name: 'regexpTest'
+                          postconditions:
+                            match: 'Quux'
+                       },
                        extra: '' } }
 
         it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
@@ -161,7 +214,11 @@ describe 'integration test' do
 
       context EqualityComparator do
         let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'equalityTest'\n  postconditions:\n    equal: 'Quux'",
+                       test: %q{
+                        - name: 'equalityTest'
+                          postconditions:
+                            equal: 'Quux'
+                       },
                        extra: '' } }
 
         it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
@@ -169,7 +226,11 @@ describe 'integration test' do
 
       context ContainComparator do
         let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'containTest'\n  postconditions:\n    contain: 'Quux'",
+                       test: %q{
+                        - name: 'containTest'
+                          postconditions:
+                            contain: 'Quux'
+                       },
                        extra: '' } }
 
         it { expect(response).to eq invalid_response('containTest', '**Rainbow in the dark** does not contain the right value.') }
@@ -180,11 +241,13 @@ describe 'integration test' do
       describe RegexpComparator do
         context 'simple text' do
           let(:test) { { content: 'Rainbow in the dark',
-                         test: "- name: 'regexpTest'\n"\
-                               "  postconditions:\n"\
-                               "    match:\n"\
-                               "     expected: 'the Dark'\n"\
-                               '     ignore_case: true',
+                         test: %q{
+                          - name: 'regexpTest'
+                            postconditions:
+                              match:
+                                expected: 'the Dark'
+                                ignore_case: true
+                         },
                          extra: '' } }
 
           it { expect(response).to eq valid_response('regexpTest') }
@@ -202,6 +265,7 @@ describe 'integration test' do
 
             it { expect(response).to eq valid_response('it is a proper ip') }
           end
+
           context 'when invalid' do
             let(:test) { {
                  content: '1200.10.20.2',
@@ -219,11 +283,13 @@ describe 'integration test' do
 
       context EqualityComparator do
         let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'equalityTest'\n"\
-                             "  postconditions:\n"\
-                             "    equal:\n"\
-                             "     expected: 'Rainbow   in the dark'\n"\
-                             '     ignore_case: true',
+                       test: %q{
+                        - name: 'equalityTest'
+                          postconditions:
+                            equal:
+                              expected: 'Rainbow   in the dark'
+                              ignore_case: true
+                       },
                        extra: '' } }
 
         it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
@@ -231,11 +297,13 @@ describe 'integration test' do
 
       context ContainComparator do
         let(:test) { { content: 'Rainbow in the dark',
-                       test: "- name: 'containTest'\n"\
-                             "  postconditions:\n"\
-                             "    contain:\n"\
-                             "     expected: 'DARRRk'\n"\
-                             '     ignore_case: true',
+                       test: %q{
+                        - name: 'containTest'
+                          postconditions:
+                            contain:
+                              expected: 'DARRRk'
+                              ignore_case: true
+                       },
                        extra: '' } }
 
         it { expect(response).to eq invalid_response('containTest', '**Rainbow in the dark** does not contain the right value.') }
