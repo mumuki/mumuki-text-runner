@@ -1,8 +1,8 @@
 require_relative '../spec_helper'
 
-describe RegexpComparator do
+describe TextChecker::RegexpComparator do
   describe '#success?' do
-    let(:comparator) { RegexpComparator.new(expected: 'foo|bar*') }
+    let(:comparator) { TextChecker::RegexpComparator.new(expected: 'foo|bar*') }
     subject { comparator.success? actual }
 
     context 'when the regex matches' do
@@ -19,7 +19,7 @@ describe RegexpComparator do
   end
 
   describe '#error_message' do
-    let(:comparator) { RegexpComparator.new(expected: 'zzz') }
+    let(:comparator) { TextChecker::RegexpComparator.new(expected: 'zzz') }
     subject { comparator.send(:error_message, 'Hey Arnold!') }
 
     context 'when language is English' do

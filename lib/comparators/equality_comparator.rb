@@ -1,4 +1,4 @@
-class EqualityComparator < Comparator
+class TextChecker::EqualityComparator < TextChecker::Comparator
 
   def success?(source)
     source == expected

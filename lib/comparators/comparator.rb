@@ -1,4 +1,4 @@
-class Comparator
+class TextChecker::Comparator
   def initialize(config = {})
     @config = config
   end
@@ -15,8 +15,8 @@ class Comparator
 
   def modifiers
     modifiers = []
-    modifiers << IgnoreWhitespace if @config[:ignore_whitespace]
-    modifiers << IgnoreCase if @config[:ignore_case]
+    modifiers << TextChecker::IgnoreWhitespace if @config[:ignore_whitespace]
+    modifiers << TextChecker::IgnoreCase if @config[:ignore_case]
     modifiers
   end
 

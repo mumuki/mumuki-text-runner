@@ -1,4 +1,4 @@
-class ValidIpComparator < Comparator
+class TextChecker::ValidIpComparator < TextChecker::Comparator
 
     def success?(source)
       !!REGEXP.match(source)

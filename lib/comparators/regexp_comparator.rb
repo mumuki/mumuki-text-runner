@@ -1,4 +1,4 @@
-class RegexpComparator < Comparator
+class TextChecker::RegexpComparator < TextChecker::Comparator
 
   def success?(source)
     !!Regexp.new(expected).match(source)

@@ -32,7 +32,7 @@ describe 'integration test' do
     end
 
     context 'given simple format' do
-      context RegexpComparator do
+      context 'match' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -46,7 +46,7 @@ describe 'integration test' do
         it { expect(response).to eq valid_response('regexpTest') }
       end
 
-      context EqualityComparator do
+      context 'equal' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -60,7 +60,7 @@ describe 'integration test' do
         it { expect(response).to eq valid_response('equalityTest') }
       end
 
-      context ContainComparator do
+      context 'contain' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -76,7 +76,7 @@ describe 'integration test' do
     end
 
     context 'given options' do
-      context RegexpComparator do
+      context 'match' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -93,7 +93,7 @@ describe 'integration test' do
         it { expect(response).to eq valid_response('regexpTest') }
       end
 
-      context EqualityComparator do
+      context 'equal' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -110,7 +110,7 @@ describe 'integration test' do
         it { expect(response).to eq valid_response('equalityTest') }
       end
 
-      context ContainComparator do
+      context 'contain' do
         let(:test) {
           {
             content: 'Rainbow in the dark',
@@ -166,7 +166,7 @@ describe 'integration test' do
         end
       end
 
-      context ValidIpComparator do
+      context 'valid_ip' do
         let(:test) {
           {
             content: '8.8.4.4',
@@ -200,7 +200,7 @@ describe 'integration test' do
     end
 
     context 'given simple format' do
-      context RegexpComparator do
+      context 'match' do
         let(:test) { { content: 'Rainbow in the dark',
                        test: %q{
                         - name: 'regexpTest'
@@ -212,7 +212,7 @@ describe 'integration test' do
         it { expect(response).to eq invalid_response('regexpTest', '**Rainbow in the dark** does not match the expected expression.') }
       end
 
-      context EqualityComparator do
+      context 'equal' do
         let(:test) { { content: 'Rainbow in the dark',
                        test: %q{
                         - name: 'equalityTest'
@@ -224,7 +224,7 @@ describe 'integration test' do
         it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
       end
 
-      context ContainComparator do
+      context 'contain' do
         let(:test) { { content: 'Rainbow in the dark',
                        test: %q{
                         - name: 'containTest'
@@ -238,7 +238,7 @@ describe 'integration test' do
     end
 
     context 'given options' do
-      describe RegexpComparator do
+      describe 'match' do
         context 'simple text' do
           let(:test) { { content: 'Rainbow in the dark',
                          test: %q{
@@ -281,7 +281,7 @@ describe 'integration test' do
         end
       end
 
-      context EqualityComparator do
+      context 'equal' do
         let(:test) { { content: 'Rainbow in the dark',
                        test: %q{
                         - name: 'equalityTest'
@@ -295,7 +295,7 @@ describe 'integration test' do
         it { expect(response).to eq invalid_response('equalityTest', '**Rainbow in the dark** is not the right value.') }
       end
 
-      context ContainComparator do
+      context 'contain' do
         let(:test) { { content: 'Rainbow in the dark',
                        test: %q{
                         - name: 'containTest'

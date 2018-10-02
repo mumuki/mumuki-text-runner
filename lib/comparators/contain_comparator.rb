@@ -1,4 +1,4 @@
-class ContainComparator < Comparator
+class TextChecker::ContainComparator < TextChecker::Comparator
 
   def success?(source)
     source.include? expected

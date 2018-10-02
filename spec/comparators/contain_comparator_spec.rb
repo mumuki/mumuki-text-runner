@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe ContainComparator do
-  let(:comparator) { ContainComparator.new(expected: 'Foo bar') }
+describe TextChecker::ContainComparator do
+  let(:comparator) { TextChecker::ContainComparator.new(expected: 'Foo bar') }
 
   describe '#success?' do
     subject { comparator.success? actual }
