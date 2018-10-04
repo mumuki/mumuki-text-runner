@@ -1,16 +1,9 @@
 require_relative '../spec_helper'
 
-describe RegexpComparator do
-  describe '#initialize' do
-    context 'when expected value is not a string' do
-      it { expect { RegexpComparator.new(expected: 1) }.to raise_exception TypeError }
-      it { expect { RegexpComparator.new(expected: []) }.to raise_exception TypeError }
-    end
-  end
-
+describe TextChecker::RegexpComparator do
   describe '#success?' do
-    let(:comparator) { RegexpComparator.new(expected: 'foo|bar*') }
-    subject { comparator.send(:success?, actual) }
+    let(:comparator) { TextChecker::RegexpComparator.new(expected: 'foo|bar*') }
+    subject { comparator.success? actual }
 
     context 'when the regex matches' do
       let(:actual) { 'foobarbar' }
@@ -26,7 +19,7 @@ describe RegexpComparator do
   end
 
   describe '#error_message' do
-    let(:comparator) { RegexpComparator.new(expected: 'zzz') }
+    let(:comparator) { TextChecker::RegexpComparator.new(expected: 'zzz') }
     subject { comparator.send(:error_message, 'Hey Arnold!') }
 
     context 'when language is English' do

@@ -1,21 +1,22 @@
-class Comparator
-  def initialize(opts = {})
-    @expected = opts[:expected]
-    @error_message = opts[:error]
-    @config = opts
-    setup if respond_to?(:setup, true)
+class TextChecker::Comparator
+  def initialize(config = {})
+    @config = config
   end
 
   def compare(source)
-    @error_message || error_message(source) unless success?(source)
+    @config[:error] || error_message(source) unless success?(transform(source))
+  end
+
+  def expected
+    transform @config[:expected]
   end
 
   private
 
   def modifiers
     modifiers = []
-    modifiers << IgnoreWhitespace if @config[:ignore_whitespace]
-    modifiers << IgnoreCase if @config[:ignore_case]
+    modifiers << TextChecker::IgnoreWhitespace if @config[:ignore_whitespace]
+    modifiers << TextChecker::IgnoreCase if @config[:ignore_case]
     modifiers
   end
 

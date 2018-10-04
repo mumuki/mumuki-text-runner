@@ -1,7 +1,5 @@
-module IgnoreWhitespace
-  class << self
-    def apply(text)
-      text.delete(' ')
-    end
+module TextChecker::IgnoreWhitespace
+  def self.apply(text)
+    text.delete(' ')
   end
 end

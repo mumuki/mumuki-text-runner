@@ -1,9 +1,9 @@
 require_relative '../spec_helper'
 
-describe ValidIpComparator do
+describe TextChecker::ValidIpComparator do
   describe '#success?' do
-    let(:comparator) { ValidIpComparator.new }
-    subject { comparator.send(:success?, actual) }
+    let(:comparator) { TextChecker::ValidIpComparator.new }
+    subject { comparator.success? actual }
 
     context 'when the ip is valid' do
       let(:actual) { '127.0.0.1' }
@@ -33,7 +33,7 @@ describe ValidIpComparator do
   end
 
   describe '#error_message' do
-    let(:comparator) { ValidIpComparator.new }
+    let(:comparator) { TextChecker::ValidIpComparator.new }
     subject { comparator.send(:error_message, 'Super mega ukulele') }
 
     context 'when language is English' do

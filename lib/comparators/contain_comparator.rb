@@ -1,10 +1,10 @@
-class ContainComparator < Comparator
-
-  private
+class TextChecker::ContainComparator < TextChecker::Comparator
 
   def success?(source)
-    transform(source).include? transform(@expected)
+    source.include? expected
   end
+
+  private
 
   def error_message(source)
     I18n.t 'contain.failure', actual: source

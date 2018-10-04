@@ -1,18 +1,39 @@
 class TextChecker < Mumukit::Metatest::Checker
-  def self.compare(relation_hash)
-    raise 'Invalid hash arity' if relation_hash.size != 1
-    type = relation_hash.keys.first
-    comparator_class = relation_hash.values.first
-    define_method "check_#{type}".to_sym do |test, config|
-      comparator_class
-        .new(config.is_a?(Hash) ? config : {expected: config})
-        .compare(test[:source])
-        .try { |error| fail error }
+  require_relative './comparators/comparator'
+  require_relative './comparators/equality_comparator'
+  require_relative './comparators/contain_comparator'
+  require_relative './comparators/regexp_comparator'
+  require_relative './comparators/valid_ip_comparator'
+
+  require_relative './options/ignore_whitespace'
+  require_relative './options/ignore_case'
+
+  COMPARATORS = {
+    match: TextChecker::RegexpComparator,
+    equal: TextChecker::EqualityComparator,
+    contain: TextChecker::ContainComparator,
+    valid_ip: TextChecker::ValidIpComparator
+  }
+
+  def check_assertion(key, input, config, example)
+    if key == :keys
+      check_keys input, config, example
+    else
+      check_comparators key, input, config
     end
   end
 
-  compare :match => RegexpComparator
-  compare :equal => EqualityComparator
-  compare :contain => ContainComparator
-  compare :valid_ip => ValidIpComparator
+  def check_comparators(key, input, config)
+    COMPARATORS[key]
+        .new(config.is_a?(Hash) ? config : {expected: config})
+        .compare(input[:source])
+        .try { |error| fail error }
+  end
+
+  def check_keys(input, config, example)
+    source_hash = YAML.load(input[:source]).with_indifferent_access
+      config.each do |subkey, subconfig|
+        check_assertions({source: source_hash[subkey]}, subconfig, example)
+    end
+  end
 end
