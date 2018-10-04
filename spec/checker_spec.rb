@@ -73,8 +73,8 @@ describe TextChecker do
     end
 
     context 'when do not pass because of format' do
-      let(:source) { { name: 'Ada', surname: 'lovelace' }.to_yaml }
-      it { is_expected.to eq ['test', :failed, '**lovelace** is not the right value.'] }
+      let(:source) { { name: 'Ada', lastname: 'byron' }.to_yaml }
+      it { is_expected.to eq ['test', :failed, '**** is not the right value.'] }
     end
   end
 
@@ -97,12 +97,12 @@ describe TextChecker do
       {
         keys: {
           surname: { contain: { expected: 'lovelace', ignore_whitespace: true, ignore_case: true } },
-          name: { equal: 'Ada' }
+          name: { equal: { expected: 'Ada', error: 'must be called Ada'} }
         }
       }
     }
 
-    context 'when pass with yaml' do
+    context 'when pass' do
       let(:source) { { name: 'Ada', surname: 'countess of lovelace' }.to_yaml }
       it { is_expected.to eq ['test', :passed, nil] }
     end
@@ -111,5 +111,11 @@ describe TextChecker do
       let(:source) { { name: 'Ada', surname: 'byron' }.to_yaml }
       it { is_expected.to eq ['test', :failed, '**byron** does not contain the right value.'] }
     end
+
+    context 'when do not pass with custom error message' do
+      let(:source) { { name: 'Aida', surname: 'Lovelace' }.to_yaml }
+      it { is_expected.to eq ['test', :failed, 'must be called Ada'] }
+    end
+
   end
 end
