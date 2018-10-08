@@ -1,7 +1,7 @@
 class TextChecker::EqualityComparator < TextChecker::Comparator
 
   def success?(source)
-    source == expected
+    source == expected.to_s
   end
 
   private

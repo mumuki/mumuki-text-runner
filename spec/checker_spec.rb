@@ -8,6 +8,12 @@ describe TextChecker do
   context 'when using plain assertions' do
     let(:assertions) { { equal: 'hello' } }
 
+    context 'when pass using numerical values' do
+      let(:assertions) { { equal: 42 } }
+      let(:source) { '42' }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
     context 'when pass' do
       let(:source) { 'hello' }
       it { is_expected.to eq ['test', :passed, nil] }
@@ -59,6 +65,13 @@ describe TextChecker do
 
     context 'when pass with yaml' do
       let(:source) { { name: 'Ada', surname: 'Lovelace' }.to_yaml }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass using numerical values' do
+      let(:assertions) { { keys: { question: { equal: '?' }, answer: { contain: 42 } } } }
+      let(:source) { { question: '?', answer: '42' }.to_yaml }
+
       it { is_expected.to eq ['test', :passed, nil] }
     end
 

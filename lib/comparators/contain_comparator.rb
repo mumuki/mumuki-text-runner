@@ -1,7 +1,7 @@
 class TextChecker::ContainComparator < TextChecker::Comparator
 
   def success?(source)
-    source.include? expected
+    source.include? expected.to_s
   end
 
   private
