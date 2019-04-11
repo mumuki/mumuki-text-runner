@@ -3,7 +3,7 @@ env:
   matrix:
   - RACK_ENV=development
 rvm:
-- 2.3.1
+- 2.6.0
 addons:
   code_climate:
     repo_token: 0bca70dfb8aeeacd4e022ed2766f157553786af7a38c27e73291bb925eae7155
