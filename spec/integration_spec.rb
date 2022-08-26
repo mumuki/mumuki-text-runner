@@ -31,6 +31,94 @@ describe 'integration test' do
       it { expect(response).to eq valid_response('test') }
     end
 
+    context 'given single, multiline scenario test' do
+      let(:test) {
+        {
+          content: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+    context 'given single, multiline with carriage return in content' do
+      let(:test) {
+        {
+          content: "name,surname,age\r\nFeli,Perez,24\r\nDani,Lopez,32\r\nJuani,Vazquez,19",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+    context 'given single, multiline with carriage return in test' do
+      let(:test) {
+        {
+          content: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19",
+          test: %q{
+            equal: "name,surname,age\r\nFeli,Perez,24\r\nDani,Lopez,32\r\nJuani,Vazquez,19"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+
+    context 'given single, mixed tabs and spaces in content' do
+      let(:test) {
+        {
+          content: "zip  code,fiscal\taddress",
+          test: %q{
+            equal: "zip code,fiscal address"
+            lenient_blank: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+
+    context 'given single, mixed tabs and spaces in test' do
+      let(:test) {
+        {
+          content: "zip code,fiscal address",
+          test: %q{
+            equal: "zip\tcode,fiscal   address"
+            lenient_blank: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+    context 'given single, multiline, lenient test' do
+      let(:test) {
+        {
+          content: "\tname,surname,age\n\tFeli,Perez,24\n\tDani,Lopez,32\n\tJuani,Vazquez,19",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19"
+            multiline: true
+            lenient_blank: true
+            ignore_whitespace: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
     context 'given simple format' do
       context 'match' do
         let(:test) {

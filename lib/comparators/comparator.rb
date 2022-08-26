@@ -15,8 +15,10 @@ class TextChecker::Comparator
 
   def modifiers
     modifiers = []
-    modifiers << TextChecker::IgnoreWhitespace if @config[:ignore_whitespace]
     modifiers << TextChecker::IgnoreCase if @config[:ignore_case]
+    modifiers << TextChecker::LenientBlank if @config[:lenient_blank]
+    modifiers << TextChecker::IgnoreWhitespace if @config[:ignore_whitespace]
+    modifiers << TextChecker::Multiline if @config[:multiline]
     modifiers
   end
 
