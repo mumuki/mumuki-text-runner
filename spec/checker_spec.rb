@@ -47,6 +47,59 @@ describe TextChecker do
       it { is_expected.to eq ['test', :passed, nil] }
     end
 
+    context 'when pass without spaces' do
+      let(:source) { 'helloworld' }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when do not pass' do
+      let(:source) { 'hey jude' }
+      it { is_expected.to eq ['test', :failed, '**hey jude** is not the right value.'] }
+    end
+  end
+
+  context 'when using multiline flags' do
+    let(:assertions) { { equal: {expected: "hello\nworld", multiline: true } } }
+
+    context 'when pass with carriage return' do
+      let(:source) { "hello\r\nworld" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass without carriage return' do
+      let(:source) { "hello\nworld" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when do not pass' do
+      let(:source) { 'hey jude' }
+      it { is_expected.to eq ['test', :failed, '**hey jude** is not the right value.'] }
+    end
+  end
+
+  context 'when using lenient blanks flags' do
+    let(:assertions) { { equal: {expected: 'hello world', lenient_blank: true } } }
+
+    context 'when pass' do
+      let(:source) { 'hello    world' }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass with tabs' do
+      let(:source) { "hello\tworld" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass with mixed tabs and spaces' do
+      let(:source) { "hello \tworld" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when do not pass without spaces' do
+      let(:source) { 'helloworld' }
+      it { is_expected.to eq ['test', :failed, "**helloworld** is not the right value."] }
+    end
+
     context 'when do not pass' do
       let(:source) { 'hey jude' }
       it { is_expected.to eq ['test', :failed, '**hey jude** is not the right value.'] }

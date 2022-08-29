@@ -30,7 +30,9 @@ class TextTestHook < Mumukit::Hook
        postconditions: { equal: {
            expected: parsed_test['equal'],
            ignore_case: parsed_test['ignore_case'].present?,
-           ignore_whitespace: parsed_test['ignore_whitespace'].present? } }
+           ignore_whitespace: parsed_test['ignore_whitespace'].present?,
+           lenient_blank: parsed_test['lenient_blank'].present?,
+           multiline: parsed_test['multiline'].present? } }
      }]
   end
 
