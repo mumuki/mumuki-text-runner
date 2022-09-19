@@ -38,5 +38,13 @@ describe TextTestHook do
 
       it { expect(result).to eq [[['test1', :failed, '**Lorem ipsum** is not the right value.']]] }
     end
+
+    context 'when it fails in portuguese' do
+      let(:postcondition) { { equal: { expected: 'Oops' } } }
+
+      before { I18n.locale = :pt }
+
+      it { expect(result).to eq [[['test1', :failed, '**Lorem ipsum** não é o valor correto.']]] }
+    end
   end
 end
