@@ -4,6 +4,6 @@ en:
   contain:
     failure: '**%{actual}** does not contain the right value.'
   expression:
-      failure: '**%{actual}** does not match the expected expression.'
+    failure: '**%{actual}** does not match the expected expression.'
   valid_ip:
     failure: '**%{actual}** is not a valid IP address.'

@@ -1,0 +1,9 @@
+pt:
+  equality:
+    failure: '**%{actual}** não é o valor correto.'
+  contain:
+    failure: '**%{actual}** não contém o valor correto.'
+  expression:
+    failure: '**%{actual}** não corresponde à expressão correta.'
+  valid_ip:
+    failure: '**%{actual}** não é um endereço IP válido.'
