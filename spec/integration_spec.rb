@@ -73,6 +73,49 @@ describe 'integration test' do
       it { expect(response).to eq valid_response('test') }
     end
 
+    context 'given single, multiline scenario with trailing newline' do
+      let(:test) {
+        {
+          content: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19\n",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+
+    context 'given single, multiline scenario with missing newline' do
+      let(:test) {
+        {
+          content: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19\n"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
+    context 'given single, multiline scenario with matching trailing newline' do
+      let(:test) {
+        {
+          content: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19\n",
+          test: %q{
+            equal: "name,surname,age\nFeli,Perez,24\nDani,Lopez,32\nJuani,Vazquez,19\n"
+            multiline: true
+          }
+        }
+      }
+
+      it { expect(response).to eq valid_response('test') }
+    end
+
 
     context 'given single, mixed tabs and spaces in content' do
       let(:test) {
@@ -216,9 +259,10 @@ describe 'integration test' do
       end
 
       describe 'keys mode' do
+        let(:content) { { first: 'walter white', second: 'hello, hello!', third: '0.0.0.0' } }
         let(:test) {
           {
-            content: { first: 'walter white', second: 'hello, hello!', third: '0.0.0.0' }.to_yaml,
+            content: content.to_yaml,
             test: test_spec,
             extra: ''
           }
@@ -237,6 +281,79 @@ describe 'integration test' do
                     valid_ip: true
           }}
           it { expect(response).to eq valid_response('miscTest') }
+        end
+
+        describe 'multiline test' do
+          let(:test_spec) {%q{
+            - name: 'multi'
+              postconditions:
+                keys:
+                  song:
+                    equal:
+                      expected: "Porque nadie viva en el silencio\nni en la oscuridad\nporque no seamos invisibles nunca más"
+                      multiline: true
+          }}
+
+          context 'when last line matches' do
+            let(:content) { { song: "Porque nadie viva en el silencio\r\nni en la oscuridad\r\nporque no seamos invisibles nunca más" }  }
+            it { expect(response).to eq valid_response('multi') }
+          end
+
+          context 'when has trailing newline' do
+            let(:content) { { song: "Porque nadie viva en el silencio\r\nni en la oscuridad\r\nporque no seamos invisibles nunca más\r\n" }  }
+            it { expect(response).to eq valid_response('multi') }
+          end
+
+          context 'when a trailing newline is missing' do
+            let(:test_spec) {%q{
+              - name: 'multi'
+                postconditions:
+                  keys:
+                    song:
+                      equal:
+                        expected: "Porque nadie viva en el silencio\nni en la oscuridad\nporque no seamos invisibles nunca más\n"
+                        multiline: true
+            }}
+
+            let(:content) { { song: "Porque nadie viva en el silencio\r\nni en la oscuridad\r\nporque no seamos invisibles nunca más" }  }
+            it { expect(response).to eq valid_response('multi') }
+          end
+
+          context 'when using |- syntax' do
+            let(:test_spec) {%q{
+              - name: 'multi'
+                postconditions:
+                  keys:
+                    song:
+                      equal:
+                        expected: |-
+                          Porque nadie viva en el silencio
+                          ni en la oscuridad
+                          porque no seamos invisibles nunca más
+                        multiline: true
+            }}
+
+            let(:content) { { song: "Porque nadie viva en el silencio\r\nni en la oscuridad\r\nporque no seamos invisibles nunca más" }  }
+            it { expect(response).to eq valid_response('multi') }
+          end
+
+          context 'when using | syntax' do
+            let(:test_spec) {%q{
+              - name: 'multi'
+                postconditions:
+                  keys:
+                    song:
+                      equal:
+                        expected: |
+                          Porque nadie viva en el silencio
+                          ni en la oscuridad
+                          porque no seamos invisibles nunca más
+                        multiline: true
+            }}
+
+            let(:content) { { song: "Porque nadie viva en el silencio\r\nni en la oscuridad\r\nporque no seamos invisibles nunca más" }  }
+            it { expect(response).to eq valid_response('multi') }
+          end
         end
 
         describe 'compact test' do

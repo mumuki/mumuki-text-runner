@@ -59,7 +59,8 @@ describe TextChecker do
   end
 
   context 'when using multiline flags' do
-    let(:assertions) { { equal: {expected: "hello\nworld", multiline: true } } }
+    let(:expected) { "hello\nworld" }
+    let(:assertions) { { equal: {expected: expected, multiline: true } } }
 
     context 'when pass with carriage return' do
       let(:source) { "hello\r\nworld" }
@@ -67,6 +68,23 @@ describe TextChecker do
     end
 
     context 'when pass without carriage return' do
+      let(:source) { "hello\nworld" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass with extra trailing newline' do
+      let(:source) { "hello\nworld\n" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass with matching trailing newline' do
+      let(:expected) { "hello\nworld\n" }
+      let(:source) { "hello\nworld\n" }
+      it { is_expected.to eq ['test', :passed, nil] }
+    end
+
+    context 'when pass with a missing trailing newline' do
+      let(:expected) { "hello\nworld\n" }
       let(:source) { "hello\nworld" }
       it { is_expected.to eq ['test', :passed, nil] }
     end
