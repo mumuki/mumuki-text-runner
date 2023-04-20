@@ -17,7 +17,7 @@ class TextTestHook < Mumukit::Hook
   end
 
   def parse_test(tests)
-    parsed_test = YAML.load(tests)
+    parsed_test = YAML.load(tests, permitted_classes: [Regexp, Symbol])
     if parsed_test.is_a? Array
       parse_multi_scenario_test(parsed_test)
     else
